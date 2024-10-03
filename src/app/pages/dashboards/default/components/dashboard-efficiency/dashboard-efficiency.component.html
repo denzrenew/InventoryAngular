@@ -1,0 +1,73 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-2">{{ "DASHBOARD.EFFICIENCY.HEADER" | translate }}</h4>
+        <div class="row">
+            <div class="col text-center" *ngIf="loading">
+                <div class="spinner-border text-info">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="col" *ngIf="!loading">
+                <apx-chart class="apex-charts" dir="ltr" [series]="chart.series" [chart]="chart.chart"
+                    [dataLabels]="chart.dataLabels" [labels]="chart.labels" [legend]="chart.legend" 
+                    [colors]="chart.colors" [responsive]="chart.responsive">
+                </apx-chart>
+            </div>
+
+            <div class="col-sm-5 align-self-center" *ngIf="false">
+                <div class="">
+                    <div *ngIf="loading">
+                        <p class="placeholder-glow mb-1"><span class="placeholder col-4"></span></p>
+                        <h5 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h5>
+                    </div>
+                    <div *ngIf="!loading">
+                        <p class="mb-2 efficiency-remaining">
+                            <i class="rounded bx bx-circle align-middle font-size-10 me-2"></i> {{ "DASHBOARD.EFFICIENCY.REMAINING" | translate }}
+                        </p>
+                        <h5 class="text-muted ms-3"> {{ (efficiencyData.remaining).toFixed(2) | number: "1.2-2" }}</h5>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-2" *ngIf="subscriptionType === 'PREMIERE'">
+                    <div *ngIf="loading">
+                        <p class="placeholder-glow mb-1"><span class="placeholder col-4"></span></p>
+                        <h5 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h5>
+                    </div>
+                    <div *ngIf="!loading">
+                        <p class="mb-2 efficiency-direct">
+                            <i class="rounded bx bx-circle align-middle font-size-10 me-2"></i> {{ "DASHBOARD.EFFICIENCY.DIRECT" | translate }}
+                        </p>
+                        <h5 class="text-muted ms-3"> {{ efficiencyData.direct | number: "1.2-2" }}</h5>
+                    </div>                                
+                </div>
+
+                <div class="mt-3 pt-2">
+                    <div *ngIf="loading">
+                        <p class="placeholder-glow mb-1"><span class="placeholder col-4"></span></p>
+                        <h5 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h5>
+                    </div>
+                    <div *ngIf="!loading">
+                        <p class="mb-2 efficiency-monthly">
+                            <i class="rounded bx bx-circle align-middle font-size-10 me-2"></i> {{ "DASHBOARD.EFFICIENCY.MONTHLY" | translate }}
+                        </p>
+                        <h5 class="text-muted ms-3"> {{ efficiencyData.monthly | number: "1.2-2" }}</h5>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-2" *ngIf="subscriptionType === 'PREMIERE'">
+                    <div *ngIf="loading">
+                        <p class="placeholder-glow mb-1"><span class="placeholder col-4"></span></p>
+                        <h5 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h5>
+                    </div>
+                    <div *ngIf="!loading">
+                        <p class="mb-2 efficiency-group">
+                            <i class="rounded bx bx-circle align-middle font-size-10 me-2"></i> {{ "DASHBOARD.EFFICIENCY.GROUP" | translate }}
+                        </p>
+                        <h5 class="text-muted ms-3"> {{ efficiencyData.group | number: "1.2-2" }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

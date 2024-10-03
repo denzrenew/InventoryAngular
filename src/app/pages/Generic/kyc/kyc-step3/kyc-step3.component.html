@@ -1,0 +1,71 @@
+<div class="container-fluid p-4">
+    <form (submit)="submitHandler()" class="container" [formGroup]="state.secondaryVerification">
+        <h4>Step 3. Submit your Secondary Verification</h4>
+        <p>
+            The third phase of verification involves selecting an ID type (Medicare Card, Utility Bill, or Bank Statement) and uploading images of both the front and back sides for verification. 
+            Upon completion, submitted documents will undergo review for verification purposes.
+        </p>
+
+        <div class="alert alert-danger d-flex align-items-center" role="alert" *ngIf="state.secondaryVerificationComment">
+            <i class="mdi mdi-alert-octagon" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+                {{ state.secondaryVerificationComment }}
+            </span>
+        </div>
+
+        <div class="alert alert-success d-flex align-items-center" role="alert" 
+            *ngIf="!state.secondaryVerificationComment && (state.secondaryVerificationStatus === 'Complete' || state.secondaryVerificationStatus === 'Approved')">
+            <i class="mdi mdi-check" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+                Nice! Your Secondary Identity Verification has been approved!
+            </span>
+        </div>
+
+        <div class="text-center" *ngIf="state.loading">
+            <div class="spinner-border text-primary my-5">
+                <span class="visually-hidden">Retrieving data...</span>
+            </div>
+            <p class="text-info">Retrieving your Secondary KYC information...</p>
+        </div>
+
+        <div *ngIf="!state.loading">
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="IdType" class="form-label">ID Type <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="IdentificationType" required>
+                        <option value="" disabled>Select an ID Type</option>
+                        <option *ngFor="let i of state.kycModel.secondaryData" [value]="i">
+                            {{ i }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0">
+                    <label for="IdFrontImage" class="form-label">ID Image (Front) <span class="text-danger">*</span></label>
+                    <input type="file" id="IdFrontImage" formControlName="IndentificationFront" class="form-control" 
+                        required (change)="onFileSelected($event, 'IndentificationFront')" />
+                </div>
+                <div class="col-12 col-md">                
+                    <label for="IdImageBack" class="form-label">ID Image (Back) <span class="text-danger">*</span></label>
+                    <input type="file" id="IdImageBack" formControlName="IndentificationBack" class="form-control" 
+                        required (change)="onFileSelected($event, 'IndentificationBack')" />
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-2 mt-1 mb-3 mb-lg-0">
+                    <button type="submit" class="btn btn-primary w-100 w-lg-auto" [disabled]="state.secondaryVerification?.invalid || state.isSubmitting.secondaryVerification">
+                        <span *ngIf="state.isSubmitting.secondaryVerification">Submitting...</span>
+                        <span *ngIf="!state.isSubmitting.secondaryVerification">
+                            {{ formIsCompleted() && !formHasModifications() ? 'Next' : 'Submit' }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        
+    </form>
+</div>

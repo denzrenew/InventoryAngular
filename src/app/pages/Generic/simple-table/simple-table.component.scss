@@ -1,0 +1,21 @@
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+    width: 4px; /* Adjust to your desired width */
+    height: 6px;
+}
+
+/* Track (the area behind the scrollbar) */
+::-webkit-scrollbar-track {
+    background: var(--bs-secondary); /* Change to your preferred background color */
+}
+
+/* Thumb (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+    transition: all .3s ease;
+    background: var(--bs-info); /* Change to your preferred thumb color */
+}
+
+/* On hover, style the thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-info-text-emphasis); /* Change to your preferred hover color */
+}

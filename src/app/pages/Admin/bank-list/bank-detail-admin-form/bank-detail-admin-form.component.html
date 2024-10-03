@@ -1,0 +1,74 @@
+
+<div class="col-md-9">
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Bank Details Form</h5>
+                      
+            <form class="needs-validation" name="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input readonly type="text" class="form-control" formControlName="bankName" id="bankName" placeholder="" 
+                            [class.is-invalid]="submitted && f.bankName.errors" />
+                            <div *ngIf="submitted && f.bankName.errors" class="invalid-feedback">
+                              <div *ngIf="f.bankName.errors.required">Bank name is required</div>                      
+                            </div>
+                            <label for="bankName">Bank Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input readonly type="text" class="form-control" formControlName="accountHolderName" id="accountHolderName" placeholder=""  [class.is-invalid]="submitted && f.accountHolderName.errors" />
+                            <div *ngIf="submitted && f.accountHolderName.errors" class="invalid-feedback">
+                              <div *ngIf="f.accountHolderName.errors.required">Account holder name is required</div>                      
+                            </div>
+                            <label for="accountHolderName">Account Holder Name</label>
+                        </div>
+                    </div>                     
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input readonly type="text" class="form-control" formControlName="accountNumber" id="accountNumber" placeholder="" [class.is-invalid]="submitted && f.accountNumber.errors" />
+                            <div *ngIf="submitted && f.accountNumber.errors" class="invalid-feedback">
+                              <div *ngIf="f.accountNumber.errors.required">Account number is required</div>  
+                              <div *ngIf="f.accountNumber.errors.maxLength">Account number exceeded maximum allowed characters.</div>                      
+                            </div>
+                            <label for="accountNumber">Account Number</label>
+                        </div>
+                    </div>      
+                  <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <textarea readonly type="text" class="form-control" formControlName="notes" id="notes" rows="3" cols="30" placeholder="Enter banknotes" ></textarea>
+                            <label for="notes">Notes</label>
+                        </div>           
+                    </div>   
+
+                </div>      
+
+                <br />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>            
+                    </div>
+
+
+                </div>
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+

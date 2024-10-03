@@ -1,0 +1,142 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- LEFT PART (LIST) -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body" style="max-height: 70vh;">
+
+                    <!-- LIST FUNCTIONS -->
+                    <div class="row align-items-end">
+                        <div class="col-sm">
+                            <h4 class="text-muted">
+                                My questions
+                            </h4>
+                        </div>
+                        <div class="col-sm" style="text-align: end;">
+                            <button type="button" class="btn btn-success" (click)="editMode = true">Ask a Question</button>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- LIST CONTENT -->
+                    <ul class="list-group">
+                        <li class="list-group-item text-center" *ngIf="isLoading">
+                            <div class="spinner-border text-info m-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="text-info">
+                                <span class="loading-text">
+                                    Fetching tickets...
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-group-item text-center" *ngIf="!isLoading && supportTickets.length <= 0">
+                            <div class="my-4">
+                                <span class="text-muted">You currently have no tickets</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item hoverable" *ngFor="let supportTicket of supportTickets" (click)="selectedTicket = supportTicket" [class.selected]="selectedTicket?.id === supportTicket.id">
+                            <div class="row">
+                                <div [class.col-sm]="!supportTicket.isReadByAdmin && !supportTicket.adminReply" 
+                                    [class.col-sm-10]="supportTicket.isReadByAdmin || supportTicket.adminReply">
+                                    <div class="row">
+                                        <h5 class="text-primary subject">{{ supportTicket.subject }} <span class="text-muted font-size-10">({{ supportTicket.createdDate | date: 'MMM/dd/yyyy hh:mm a' }})</span></h5>
+                                    </div>
+                                    <div class="row">
+                                        <span class="text-secondary font-size-12 description text-truncate">
+                                            {{ supportTicket.content }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 badge-container align-self-end" *ngIf="supportTicket.isReadByAdmin || supportTicket.adminReply">
+                                    <span class="badge bg-info" *ngIf="supportTicket.isReadByAdmin && !supportTicket.adminReply">Seen!</span>
+                                    <span class="badge bg-danger" *ngIf="supportTicket.isReadByAdmin && supportTicket.adminReply">New!</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card">
+                <div class="card-body" style="height: 80vh; overflow-y: auto; overflow-x: hidden; padding: 10px;">
+                    
+                    <div *ngIf="!editMode">
+                        <div class="row">
+                            <div class="col-sm">
+                                <h5 class="py-2 ps-2">{{ selectedTicket?.subject ?? "No ticket selected" }}</h5>
+                            </div>
+                            <hr>
+                        </div>
+    
+                        <!-- Display if no selected ticket or no tickets -->
+                        <div class="d-flex align-items-center justify-content-center" style="margin-top: 16rem;" *ngIf="!selectedTicket">
+                            <p class="text-center">
+                                Nothing to show here, feel free to ask us a <span class="text-warning">question</span> and we're here to <span class="text-info">assist</span> <strong> you!</strong><br/>
+                                Just <span class="text-danger">click</span> on the <span class="text-success">"Ask a Question"</span> button<span *ngIf="supportTickets.length > 0"> or you can click on any <br>
+                                item from the list</span>!
+                            </p>
+                        </div>
+    
+                        <!-- Display here -->
+                        <div *ngIf="selectedTicket">
+                            <div class="row mb-4">
+                                <div class="col-sm">
+                                    <div class="chat-bubble outgoing">
+                                        <h6 class="b-500 text-warning">You</h6>
+                                        <p>{{ selectedTicket.content }}</p>
+                                        <p class="text-warning text-end font-size-11">({{ selectedTicket.createdDate | date: 'MMM/dd/yyyy hh:mm a' }})</p>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="row my-4" *ngIf="selectedTicket.adminReply">
+                                <div class="col-sm">
+                                    <div class="chat-bubble incoming">
+                                        <h6 class="b-500 text-warning">Admin</h6>
+                                        <p>{{ selectedTicket.adminReply }}</p>
+                                        <p class="text-warning text-start font-size-11">({{ selectedTicket.lastModified }})</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="editMode">
+                        <form [formGroup]="form" (ngSubmit)="submitTicket()">
+                            <div class="row">
+                                <div class="col-sm-6 my-2 ms-1">
+                                    <input type="text" formControlName="subject" class="form-control" placeholder="Place your Subject here!" maxlength="50" [class.border-danger]="form.get('subject').touched && form.get('subject').invalid" />
+                                </div>
+                                <hr class="my-2">
+                            </div>
+
+                            <div class="d-flex justify-content-bottom w-100">
+                                <div class="input-group">
+                                    <input type="text" formControlName="content" class="form-control" placeholder="Kindly put the details about your question here" maxlength="250" [class.border-danger]="form.get('content').touched && form.get('content').invalid" />
+                                    <button type="submit" class="btn btn-info" [disabled]="form.invalid || isSubmitting">
+                                        <i class="mdi mdi-send"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="overlay" [class.show]="isSubmitting">
+                            <div class="spinner-container">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

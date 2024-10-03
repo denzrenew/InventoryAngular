@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <app-page-title title="{{walletType}} Details"></app-page-title>
+
+    <div class="row">
+      <div class="col-12 col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Active Comission</h4>
+            <!-- <p class="card-title-desc">Earnigs that are available from transfer:  100.00  </p> -->
+            <p class="card-title-desc">
+ 
+            </p>
+
+            <div class="table-responsive">
+              <app-basic-table
+              [listApi] = "listApi"
+              [showAction] = "showAction"
+              [showTransfer] = "showTransfer"
+              [showViewDetails] = "showViewDetails"
+              [deleteApi] = "deleteApi"
+              [isTransferred] = "!isTransferred"
+              [addFormRoute] = "formRoute"
+              [transferPostUrl] = "transferPostUrl"
+              [transferCheckUrl] = "transferCheckUrl"
+              [showTotal] = "showTotal"
+              [totalAmountURL] = "totalUrl"
+              [columns] = "columns">
+
+              </app-basic-table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-12 col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">History</h4>
+            <!--<p class="card-title-desc">Your wallet History Earnigs total:  100.00</p>-->
+
+
+            <div class="table-responsive">
+              <app-basic-table
+              [listApi] = "listApi"
+              [showAction] = "showAction"
+              [showViewDetails] = "showViewDetails"
+              [deleteApi] = "deleteApi"
+              [isTransferred] = "isTransferred"
+              [addFormRoute] = "formRoute"
+              [showTotal] = "showTotal"
+              [totalAmountURL] = "totalUrl"
+              [columns] = "columns2">
+
+              </app-basic-table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+
+  </div>

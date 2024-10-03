@@ -1,0 +1,157 @@
+<p class="text-warning" *ngIf="formaction === 'ALLOCATE'">
+    You are allocating this user <b class="text-info">{{ capitalize(lastName) }}, {{ capitalize(firstName) }}</b> to your matrix. <a href="javascript:0" class="text-danger" routerLink="/">[click here to cancel]</a>
+</p>
+
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-2">SEARCH</h4>
+                <div class="row">
+                    <form class="form-inline" [formGroup]="form" (ngSubmit)="searchForUser()">
+                        <div class="form-group mb-2">
+                          <label for="staticEmail2" class="sr-only">Search:</label>
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Enter search string here (Name or referral code)" formControlName="searchText">
+                            <button class="btn btn-info" title="Search" (click)="searchForUser()">
+                                <i class="bx bx-search-alt-2"></i>
+                            </button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row my-1" *ngIf="!isFirstSearch && !isSearching">
+                    <div class="col-sm">
+                        <p class="text-info">Search returned (<span class="text-warning">{{ searchResult.length }}</span>) result{{ searchResult.length > 1 ? 's' : ''}}</p>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm">
+
+                        <tabset class="nav-tabs nav-tabs-custom card-header-tabs custom-widget-nav ms-auto">
+                            <ngx-simplebar style="max-height: 80vh;">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item py-2" style="text-align:center;" *ngIf="isSearching">
+                                        <div class="spinner-border text-info m-5" style="text-align:center;" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item my-4 text-center" *ngIf="!isSearching && searchResult.length === 0">
+                                        <p class="text-info">{{ isFirstSearch ? "Enter the keyword and then press the search button" : "No member found" }}</p>
+                                    </li>
+                                    <li class="list-group-item hoverable py-2" *ngFor="let user of searchResult" (click)="searchItemClick(user)">
+                                        <div class="d-flex">
+                                            <div class="m-1 text-center">
+                                                <i class="mdi mdi-account-arrow-right-outline h2 text-warning align-middle mb-0 me-3"></i>
+                                            </div>
+    
+                                            <div class="align-self-center overflow-hidden me-auto">
+                                                <div>
+                                                    <h5 class="font-size-14 text-truncate">
+                                                        <a href="javascript: void(0);" class="text-dark">{{ user.childLastName }}, {{ user.childFirstName }}</a>
+                                                    </h5>
+                                                </div>
+                                            </div>
+    
+                                            <div class="align-self-end">
+                                                <p class="text-info">{{ user.childReferralCode }}</p>
+                                            </div>
+    
+                                        </div>
+                                    </li>
+                                </ul>
+                            </ngx-simplebar>
+                        </tabset>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-2 text-center">MEMBER MATRIX</h4>
+                <div *ngIf="isFirstLoad" style="text-align:center;">
+                    <div class="spinner-border text-info m-5" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <button class="btn btn-info" *ngIf="!isFirstLoad" [disabled]="disableAscendBtn" (click)="ascendOnceBtnClick()">Ascend</button>
+                <div class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #allocateModal role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+    <form>
+        <div class="modal-body">
+            <div class="row">
+                <p class="text-info">You are allocating this user 
+                    <b class="text-secondary">{{ capitalize(lastName) }}, {{ capitalize(firstName) }}</b> to 
+                    <b class="text-success">{{ getChildName() }}</b> 
+                    with referral code: <b class="text-success">{{ selectedUser.childReferralCode.toUpperCase() }}</b>
+                    and position <b class="text-success">{{ selectedPosition === 1 ? "LEFT" : "RIGHT" }}</b>?</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary waves-effect waves-light" (click)="submitAllocation()" [disabled]="isSubmitting">Yes</button>
+            <button type="button" class="btn btn-secondary waves-effect waves-light" (click)="closeModal()" [disabled]="isSubmitting">No</button>
+        </div>
+    </form>
+
+    <div class="modal-overlay" *ngIf="isSubmitting">
+        <div style="text-align:center;">
+            <div class="spinner-border text-info m-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #popoverUnallocated>
+    <div class="modal-header">
+        <h5 class="modal-title">Confirm allocation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm">
+                <p>You are allocating a user under <span class="text-warning bold">{{ selectedUser.childLastName }}, {{ selectedUser.childFirstName }}</span> to his/her <span class="text-warning bold">{{ selectedPosition === 1 ? 'LEFT' : 'RIGHT' }}</span>.</p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td><b>Email</b></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="unallocatedUsers.length <= 0">
+                            <td colspan="3" class="text-center">No users to allocate</td>
+                        </tr>
+                        <tr *ngFor="let user of unallocatedUsers">
+                            <td class="align-middle">{{ user.lastName }}, {{ user.firstName }}</td>
+                            <td class="align-middle">{{ user.email }}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-success" [disabled]="isSubmitting" (click)="setUnallocatedUser(user.childUserId)">
+                                    Select
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</ng-template>

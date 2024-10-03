@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <button class="btn btn-primary" (click)="backClickHandler()">
+        &lt;&lt; Back to List
+    </button>
+    <div class="row">
+        <div class="col">
+            <app-kyc-user-profile-personal-details [userId]="state.userId" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <app-kyc-user-profile-primary [userId]="state.userId" [state]="state" />
+        </div>
+        <div class="col">
+            <app-kyc-user-profile-secondary [userId]="state.userId" [state]="state" />
+        </div>
+    </div>
+</div>

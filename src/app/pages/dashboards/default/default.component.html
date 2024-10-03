@@ -1,0 +1,334 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-8">
+            <!-- Wallets | Top Right Part -->
+            <div class="row">
+                <div class="col-sm-4" >
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                <i class="mdi mdi-account-arrow-right h2 text-warning align-middle mb-0 me-3"></i> Sales Commission
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12" style="text-align:center; margin-top: .5rem;" *ngIf="loading.wallets.direct">
+                                    <div class="spinner-grow text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.direct">
+                                    <div>
+                                        <h5> {{ wallets.directWallet | number: "1.2-2" }} <i (click)="navigate('direct')" title="Click to redirect to Direct Referals's Wallet Balance" class="mdi mdi-wallet ms-1 text-success pointer"></i></h5>
+                                        <p class="text-muted text-truncate mb-0">
+                                            {{ untransferredWallets.directWallet | number: "1.2-2" }}
+                                            <i class="mdi mdi-arrow-right-bold ms-1 text-info"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.direct">
+                                    <div>
+                                        <apx-chart class="apex-charts cloneable" dir="ltr" [series]="bitconinChart.series" [chart]="bitconinChart.chart"
+                                            [colors]="bitconinChart.colors" [stroke]="bitconinChart.stroke" [fill]="bitconinChart.fill"></apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Show only if Premiere account type -->
+                <div class="col-sm-4" >
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                <i class="mdi mdi-account-multiple h2 text-info align-middle mb-0 me-3"></i> Group Sales Commission
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12" style="text-align:center; margin-top: .5rem;" *ngIf="loading.wallets.unilevel">
+                                    <div class="spinner-grow text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.unilevel">
+                                    <div>
+                                        <h5> {{ wallets.unilevelWallet | number: "1.2-2" }} <i (click)="navigate('unilevel')" title="Click to redirect to Unilevel Wallet's balance" class="mdi mdi-wallet ms-1 text-success pointer"></i></h5>
+                                        <p class="text-muted text-truncate mb-0">
+                                            {{ untransferredWallets.unilevelWallet | number: "1.2-2" }}
+                                            <i class="mdi mdi-arrow-right-bold ms-1 text-info"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.unilevel">
+                                    <div>
+                                        <apx-chart class="apex-charts cloneable" dir="ltr" [series]="litecoinChart.series"
+                                            [chart]="litecoinChart.chart" [stroke]="litecoinChart.stroke"
+                                            [colors]="bitconinChart.colors" [fill]="litecoinChart.fill"></apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                <i class="mdi mdi-calendar-star h2 text-primary align-middle mb-0 me-3"></i> Profit Sharing
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12" style="text-align:center; margin-top: .5rem;" *ngIf="loading.wallets.fast">
+                                    <div class="spinner-grow text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.fast">
+                                    <div>
+                                        <h5> {{ wallets.fastWallet | number: "1.2-2" }} <i title="This will be shared to everyone at the end of the Fiscal Year" class="mdi mdi-wallet ms-1 text-success pointer"></i></h5>
+                                        <p class="text-muted text-truncate mb-0">
+                                            {{ untransferredWallets.fastWallet | number: "1.2-2" }}
+                                            <i class="mdi mdi-arrow-right-bold ms-1 text-info"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.fast">
+                                    <div>
+                                        <apx-chart class="apex-charts cloneable" dir="ltr" [series]="ethereumChart.series" [chart]="ethereumChart.chart"
+                                            [colors]="bitconinChart.colors" [stroke]="ethereumChart.stroke" [fill]="ethereumChart.fill" [tooltip]="ethereumChart.tooltip"></apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <!-- REFERRALS -->
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3">{{parentName}}</h4>
+                            <div class="row">
+                                <!-- Direct Referral -->
+                                <div class="col-sm-12">
+                                    <h5 *ngIf="parentId > 0" class="text-muted font-size-14"><a href="javascript: void(0);" (click)="getDirectReferralUsers()" class="text-dark">Back To My Affiliatee</a>
+
+                                    </h5>
+                                    <hr>
+                                    <tabset class="nav-tabs nav-tabs-custom card-header-tabs custom-widget-nav ms-auto">
+                                        <ngx-simplebar style="max-height: 26vh;">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item py-2" style="text-align:center;" *ngIf="loading.referrals.direct">
+                                                    <div class="spinner-border text-info m-5" style="text-align:center;" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item py-4 text-center" *ngIf="!loading.referrals.direct && directReferralUsers.length === 0">
+                                                    <p class="text-info">No data to display</p>
+                                                </li>
+                                        
+                                                <li class="list-group-item py-2" *ngFor="let user of directReferralUsers">
+                                                    <div class="d-flex">
+                                                        <div class="m-1 text-center">
+                                                            <i class="mdi mdi-account-arrow-right-outline h2 text-warning align-middle mb-0 me-3"></i>
+                                                        </div>
+        
+                                                        <div class="align-self-center overflow-hidden me-auto">
+                                                            <div>
+                                                                <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" (click)="getDirectReferralUsersById(user.childUserId, user.parentUserId, user.referFirstName + ' '  +  user.referLastName)" class="text-dark">{{ user.referLastName }}, {{ user.referFirstName }}</a>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </ngx-simplebar>
+                                    </tabset>
+                                </div>
+        
+                                <!-- Unallocated
+                                <div class="col-sm-6">
+                                    <h5 class="text-muted font-size-14">{{ "DASHBOARD.REFERRALS.UNALLOCATED" | translate }}</h5>
+                                    <hr>
+                                    <tabset class="nav-tabs nav-tabs-custom card-header-tabs custom-widget-nav ms-auto">
+                                        <ngx-simplebar style="max-height: 26vh;">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item py-2" style="text-align:center;" *ngIf="loading.referrals.unallocated">
+                                                    <div class="spinner-border text-info m-5" style="text-align:center;" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item py-4 text-center" *ngIf="!loading.referrals.unallocated && unallocatedUsers.length === 0">
+                                                    <p class="text-info">No data to display</p>
+                                                </li>
+                                                <li class="list-group-item py-2" *ngFor="let user of unallocatedUsers">
+                                                    <div class="d-flex">
+                                                        <div class="m-1 text-center">
+                                                            <i class="mdi mdi-account-multiple-outline h2 text-info align-middle mb-0 me-3"></i>
+                                                        </div>
+        
+                                                        <div class="align-self-center overflow-hidden me-auto">
+                                                            <div>
+                                                                <h5 class="font-size-14 text-truncate"><a
+                                                                        href="javascript: void(0);"
+                                                                        class="text-dark">{{ user.lastName }}, {{ user.firstName }}</a>
+                                                                </h5>
+                                                                <p class="text-muted mb-0" title="Date Invited">{{ user.createdDate.toLocaleDateString() }}</p>
+                                                                <p *ngIf="user.noOfDaysForAutoAllocate > 0"  class="text-muted mb-0" title="Days Remaining">Days Remaining : {{ user.noOfDaysForAutoAllocate}}</p>
+                                                            </div>
+                                                        </div>
+        
+                                                        <a routerLink="/matrix" [queryParams]="{ fucntion : 'allocate', unallocatedUserId: user.childUserId, firstName: user.firstName, lastName: user.lastName }"
+                                                            routerLinkActive="active" class="btn btn-info btn-allocate align-self-end">Allocate</a>
+        
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </ngx-simplebar>
+                                    </tabset>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>        
+        <div class="col-xl-4">
+           <!-- User Profile | Top Left Part -->
+            <!-- Marketing material | Top right Part -->
+            <div class="card" >
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <div class="mb-4 me-3">
+
+                                </div>
+
+                                <!-- Placeholder -->
+                                <div *ngIf="isLoading">
+                                    <h5 class="placeholder-glow"><span class="placeholder col-8"></span></h5>
+                                    <p class="placeholder-glow">
+                                        <span class="placeholder col-3"></span>&nbsp;<span class="placeholder col-1"></span><br>
+                                        <span class="placeholder col-4"></span>
+                                    </p>
+                                    <div>
+                                        <h4 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h4>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="!isLoading">
+                                    <h5>{{ getName() }}</h5>
+                                    <p class="text-muted mb-1">
+                                        <a href="{{ getReferralLink() }}" target="_blank">Go to Referral Site</a>
+                                        <i title="Copy referral link" class="bx bx-copy pointer" style="padding: 0.7rem 0 0 .5rem !important" (click)="copyReferralCode()"></i>
+                                    </p>
+                                    <p class="text-muted mb-1">
+                                        <a href="{{ getAffiliatelLink() }}" target="_blank">Go to Affiliate Site</a>
+                                        <i title="Copy referral link" class="bx bx-copy pointer" style="padding: 0.7rem 0 0 .5rem !important" (click)="copyAffiliateCode()"></i>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 qr-code-container">
+                            <div class="spinner-border text-info m-5" style="text-align:center;" role="status" *ngIf="isLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <qrcode allowEmptyString="true" [qrdata]="getReferralLink()" width="150" height="150" class="text-center" *ngIf="!isLoading"></qrcode>
+                            <span class="text-danger">SCAN QR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top">
+
+                </div>
+
+            </div>
+            <!-- Marketing material | below Top right Part -->
+            <div class="card" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <div class="mb-4 me-3">
+
+                            </div>
+
+                            <!-- Placeholder -->
+                            <div *ngIf="isLoading">
+                                <h5 class="placeholder-glow"><span class="placeholder col-8"></span></h5>
+                                <p class="placeholder-glow">
+                                    <span class="placeholder col-3"></span>&nbsp;<span class="placeholder col-1"></span><br>
+                                    <span class="placeholder col-4"></span>
+                                </p>
+                                <div>
+                                    <h4 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h4>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-muted mb-1">
+                                    
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/ndQ2iGCN10k" frameborder="0" allowfullscreen></iframe>
+                                    </p>    
+                                    <br/>  
+                                <h5>Marketing materials</h5>
+                                <p class="text-muted mb-1">
+                                    Narito ang mga bagay na makakatulong sa iyo upang mapalago pa ang ating negosyo.
+
+                                </p>      
+                                <br/>                          
+                                <p class="text-muted mb-1">
+
+                                    <a href="https://drive.google.com/drive/folders/1H-Mqag0bn9dUhG0vsaBjM4W4BVvO9HQw?usp=sharing" target="_blank">Shared Images and Docs</a>    
+                                </p>
+                                
+                            
+                                
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body border-top">
+
+            </div>
+
+        </div> 
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Upgrade to Premiere Modal -->
+    <ng-template #upgradeModal role="document" let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">{{ "DASHBOARD.PROFILE.MODAL.HEADER" | translate }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalRef.hide()"></button>
+        </div>
+        <div class="modal-body">
+            <p>{{ "DASHBOARD.PROFILE.MODAL.BODY" | translate }}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary waves-effect waves-light" (click)="upgradeToPremiere()" [disabled]="isUpgradingToPremiere">
+                <span *ngIf="!isUpgradingToPremiere">{{ "DASHBOARD.PROFILE.MODAL.YES" | translate }}</span>
+                <span *ngIf="isUpgradingToPremiere">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </span>
+            </button>
+            <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal" [disabled]="isUpgradingToPremiere" (click)="modalRef.hide()">{{ "DASHBOARD.PROFILE.MODAL.NO" | translate }}</button>
+        </div>
+    </ng-template>
+
+</div>

@@ -1,0 +1,162 @@
+<div class="container-fluid">
+    <app-page-title title="Package Incentives"></app-page-title>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="active == 'all'" (click)="tabClick('all')">All</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="active == 'transfer'" (click)="tabClick('transfer')">For Transfer</a>
+        </li>
+    </ul>
+
+    <div class="row" *ngIf="active == 'all'">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">  
+                    <div class="table-responsive">
+                        <app-basic-table
+                            [listApi] = "listApi"
+                            [showAction] = "showAction"
+                            [showAllocate] = "showAllocate"
+                            [showFilter] = "showFilter"
+                            [showViewDetails] = "showViewDetails"
+                            [deleteApi] = "deleteApi"
+                            [addFormRoute] = "formRoute" 
+                            [allocateRoute] = "allocateRoute" 
+                            [detailFormRoute] = "detailFormRoute" 
+                            [columns] = "columns"
+                            [exportFn]="export"
+                            [hasExport]="true">
+                        
+                        </app-basic-table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="active == 'transfer'">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <button type="button" class="btn btn-primary mx-2" 
+                                [disabled]="forTransfer.selectedItems.length <= 0"
+                                (click)="showModal(confirmProcessModal, 'selected')">
+                                Process Selected
+                            </button>
+                            <button type="button" class="btn btn-primary mx-2" 
+                                [disabled]="forTransfer.loading || forTransfer.model.length <= 0"
+                                (click)="showModal(confirmProcessModal, 'all')">
+                                Process All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <table class="table table-striped my-2">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="form-check" (change)="toggleAllCheckbox($event)" />
+                                    </td>
+                                    <td>Id</td>
+                                    <td>User Id</td>
+                                    <td>Package Amount</td>
+                                    <td>Package Reward</td>
+                                    <td>Reward Type</td>
+                                    <td>Is Transferred</td>
+                                    <td>Date Transferred</td>
+                                    <td>First Name</td>
+                                    <td>Last Name</td>
+                                    <td>Degree</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="!forTransfer.loading && forTransfer.model.length <= 0">
+                                    <td colspan="11" class="text-center">
+                                        No items to show
+                                    </td>
+                                </tr>
+                                <tr *ngIf="forTransfer.loading">
+                                    <td colspan="11" class="text-center">
+                                        <div class="spinner-border text-info my-5" style="text-align:center;" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let item of forTransfer.model">
+                                    <td>
+                                        <input type="checkbox" class="form-check" 
+                                            [checked]="isInList(item.id, item.userId)" 
+                                            (change)="toggleCheckbox($event, item.id, item.userId)" />
+                                    </td>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.userId }}</td>
+                                    <td [class.text-success]="item.packageAmount > 10" [class.text-info]="item.packageAmount <= 10"> {{ item.packageAmount | number: "1.2-2" }}</td>
+                                    <td [class.text-success]="item.packageReward > 10" [class.text-info]="item.packageReward <= 10"> {{ item.packageReward | number: "1.2-2" }}</td>
+                                    <td>{{ item.rewardType }}</td>
+                                    <td>{{ item.isTransferred }}</td>
+                                    <td>{{ item.dateTransferred | date: "MM/dd/yyyy hh:mm:ss a" ?? "None" }}</td>
+                                    <td>{{ item.firstName }}</td>
+                                    <td>{{ item.lastName }}</td>
+                                    <td>{{ item.degree }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- OVERLAY UPON NAVIGATION -->
+                        <div class="overlay" [class.show]="forTransfer.silentRetrieval">
+                            <div class="spinner-container">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION -->
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="mt-3 btn-toolbar justify-content-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" [disabled]="forTransfer.pageNo === 1" (click)="prevPage()" *ngIf="!forTransfer.firstLoad">&lt;</button>
+                                    <button type="button" class="btn btn-primary" [disabled]="forTransfer.pageNo === page" (click)="changePageNumber(page)" *ngFor="let page of forTransfer.pagesArray">
+                                        {{ page }}
+                                    </button>
+                                    <button type="button" class="btn btn-primary" [disabled]="forTransfer.pageNo === forTransfer.totalPages" (click)="nextPage()" *ngIf="!forTransfer.firstLoad">&gt;</button>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->  
+</div>
+  
+<ng-template #confirmProcessModal>
+    <div class="modal-header">
+        <h5 class="modal-title pull-left">Confirm Processing</h5>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <span *ngIf="trigger === 'all'">Are you sure to process all the item(s)?</span>
+        <span *ngIf="trigger === 'selected'">Are you sure to process the selected ({{ forTransfer.selectedItems.length }}) items?</span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary waves-effect waves-light" [disabled]="forTransfer.isProcessing" (click)="process()">
+            <span *ngIf="!forTransfer.isProcessing">Yes</span>
+            <span *ngIf="forTransfer.isProcessing">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+        </button>
+        <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal" (click)="closeModal()">No</button>
+    </div>
+</ng-template>

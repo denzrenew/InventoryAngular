@@ -1,0 +1,148 @@
+
+<div class="col-md-9">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Order Details for <span style="color:chocolate; text-decoration: underline;">{{referenceNumber}}</span></h5>
+            <p class="card-title-desc">Below is the detail of this order.</p>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticName" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="Name" value="{{name}}">
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">GrandTotal</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ grandTotal | currency:'Php ':'symbol':'1.2-2' }}">
+                        </div>
+                      </div>
+                </div>                                  
+            </div>    
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticContact" class="col-sm-2 col-form-label">Contact #</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="Contact" value="{{mobile}}">
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticOrderDate" class="col-sm-2 col-form-label">Order Date</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="OrderDate" value="{{dateCreated}}">
+                        </div>
+                      </div>
+                </div>                                  
+            </div>                        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticIsPaid" class="col-sm-2 col-form-label">Is Paid</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="IsPaid" value="{{isPaid}}">
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{status}}">
+                        </div>
+                      </div>
+                </div>                                  
+            </div>  
+            <div *ngIf="isAdmin" class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col">
+                      <!-- Use [(ngModel)] to bind the selected value with a property in the component -->
+                      <select [(ngModel)]="status" class="form-select" id="currentState" aria-label="Select Status">
+                        <option value="Pending">Pending</option>   <!-- No payment yet -->
+                        <option value="For Schedule">For Schedule</option>   <!-- No schedule yet -->
+                        <option value="Processing">Processing</option>  <!--already scheduled -->
+                        <option value="To be Delivered">To be Delivered</option>   <!--out for delivery -->
+                        <option value="Completed">Completed</option>                            
+            
+                      </select>
+                      <textarea #notesArea class="form-control" placeholder="Notes"></textarea>
+                    </div>
+                    <div class="col">
+                      <button (click)="updateStatus(status, notesArea.value)" class="btn btn-primary mb-2">Update</button>
+                    </div>
+                </div>
+              </div>
+              <div *ngIf="this.isPaid === 'NO'" class="col-md-6">
+                <div class="row">
+                  <div class="col">
+                    <textarea #notes2area class="form-control" placeholder="Notes"></textarea>
+                  </div>
+                  <div class="col">
+                    <button (click)="updateIspaid(notes2area.value)" class="btn btn-primary mb-2">Mark as Paid</button>
+                  </div>
+                </div>
+              </div>                                  
+          </div>  
+
+
+
+
+        </div>
+        <!-- end card body -->
+    </div>
+
+</div>
+<div class="card" style="width: 50%">
+  <div class="card-header">
+    Order Lines
+  </div>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let orderline of orderlines" class="list-group-item">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{orderline.name}}</h5>
+          <div class="row">
+            <div class="col">
+             Price
+            </div>
+            <div class="col">
+             Quantity
+            </div>
+            <div class="col">
+            Total Amount
+            </div>
+          </div>          
+          <div class="row">
+            <div class="col">
+              {{orderline.price | currency:'Php ':'symbol':'1.2-2' }}
+            </div>
+            <div class="col">
+              {{orderline.quantity }}
+            </div>
+            <div class="col">
+              {{orderline.price  | currency:'Php ':'symbol':'1.2-2' }}
+            </div>
+          </div>
+          <hr/>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .9;"
+type="ball-scale-multiple"
+bdColor="#a1dfebd8" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>

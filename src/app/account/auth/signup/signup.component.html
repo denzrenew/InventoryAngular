@@ -1,0 +1,235 @@
+<div>
+
+</div>
+<div class="account-pages my-5 pt-sm-5" >
+
+  <div class="video-container">
+    <video autoplay loop  id="background-video" style="background-image: url('assets/images/Inventory-Management.png');" oncanplay="this.play()" onloadedmetadata="this.muted = true" >
+      <source src="https://staging.samdigitaltech.com/public/bgnew.mp4" type="video/mp4">
+      </video>
+  </div>    
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-12 col-xl-12">
+
+        <div class="row justify-content-center" >
+          <img style="height: 50%; width:30%; margin-bottom: 30px;background-color: white;padding: 10px;"  src="assets/images/companylogo.png" alt="" class="avatar-container">
+        </div>
+
+      </div> <!-- end col -->
+
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-4 col-lg-4 col-xl-4">
+        <div class="card  overflow-hidden"  style="background-color: rgba(237, 230, 5, 0.872); opacity: .8;" >
+
+          <div >
+
+          </div>
+          <div class="card-body pt-20" >
+            <div>
+              <img style=" margin-bottom: 30px;background-color: white;padding: 10px;"  [src]="image" alt="" class="avatar-container">
+            </div>
+            <h1>Be one of us!!!</h1>
+          </div>
+        </div>
+        <!-- end card -->
+
+      </div>       
+      <div class="col-md-8 col-lg-8 col-xl-8">
+        <div class="card overflow-hidden"  >
+
+          <div >
+
+          </div>
+          <div class="card-body pt-0" >
+            <div>
+
+            </div>
+            <div class="p-2" style="margin-top: 30px;">
+
+              <form class="needs-validation" name="signupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()"
+                novalidate>
+
+                <alert type="success" *ngIf="successmsg" [dismissible]="false">Registeration successfull.
+                </alert>
+
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>
+                <input type="hidden" formControlName="parentReferralCode" class="form-control"
+                id="parentReferralCode" [readonly]="hasReferralCode" placeholder="Referral Code" 
+                   />    
+                <div class="row mb-register">
+                  <div class="col-6">
+                    <input type="text" formControlName="userName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="userNameId" placeholder="userName" />
+
+                    <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+                      <div *ngIf="f.userName.errors.required">UserName is required</div>
+                    </div>              
+                  </div>
+                  <div class="col-6">
+                    <input type="email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Email" />
+
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Email is required</div>
+                      <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                    </div>              
+                  </div>
+                </div>                   
+                <div class="row mb-register">
+                  <div class="col-6">
+                    <input type="text" formControlName="firstName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" id="firstName"
+                    placeholder="First Name" />      
+                    <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                      <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                    </div>           
+                  </div>
+                  <div class="col-6">
+                    <input type="text" formControlName="lastName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" id="lastName"
+                    placeholder="Last Name" />        
+                    <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                      <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                    </div>            
+                  </div>
+                </div>
+
+                <div class="row mb-register">
+                  <div class="col-6">
+                      <input type="text" formControlName="middleName" class="form-control"
+                      id="middleName"
+                      placeholder="Middle Name" />
+          
+                  </div>
+                  <div class="col-6">
+                      <input class="form-control" onfocus="(this.type='date')" type="text"  formControlName="birthDate" 
+                      placeholder="Birth Date"
+                          id="birthDate">
+                      <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
+                        <div *ngIf="f.birthDate.errors.required">birth date is required</div>
+                      </div>           
+                  </div>
+                </div>        
+
+                <div class="row mb-register">
+                  <div class="col-6">
+                    <input type="password" formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="password" placeholder="Enter Password" />
+
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>      
+                  </div>
+                  <div class="col-6">
+                    <input type="password" formControlName="confirmPassword" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" id="confirmPassword" placeholder="Enter confirm password" />
+
+                  <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                    <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                  </div>          
+                  </div>
+                </div>
+                
+                <div class="row mb-register">
+                  <div class="col-6" style="display: none;">
+                    <ng-select [items]="countries"
+                    formControlName="country"
+                    bindLabel="country"
+                    [ngModel]="country"
+                    class="custom"
+                    [disabled]="isDisabled"
+                    (change)="onSelectionchange($event)"
+                    bindValue="country"
+                    placeholder="Country"
+                    >
+                    
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <img height="15" width="15" [src]="item.flag"/>
+                        <b style="padding-left: 10px;">{{item.country}}</b>
+                    </ng-template>
+                </ng-select>
+            
+
+                  <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+                    <div *ngIf="f.country.errors.required">Country is required</div>
+                  </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="row">
+
+                      <div class="col-3"  >
+                          <div class="mb-9">
+                              <input type="text" formControlName="countryCode" class="form-control" readonly
+                              [ngModel]="countryCode" 
+                              [ngClass]="{ 'is-invalid': submitted && f.countryCode.errors }" id="countryCode"
+                              placeholder="Code" />
+                          </div>
+                      </div>
+                      <div class="col-9">
+                          <div class="mb-9">
+                              <input type="text" formControlName="mobile" class="form-control"
+                              [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" id="mobile"
+                              placeholder="Enter Mobile" />
+                              <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                                <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>          
+                  </div>
+                </div>                
+
+
+
+
+
+                <div class="mt-4 text-center">
+                  <p class="mb-0">By registering you agree to the <a href="javascript: void(0);"
+                      class="text-success" style="font-weight: bolder;">Terms of
+                      Use</a></p>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm"></div>
+                  <div class="col-sm-6 ms-6 text-center">
+                      <ngx-recaptcha2 
+                        [siteKey]="captchaKey"
+                        (reset)="handleReset()"
+                        (expire)="handleExpire()"
+                        (load)="handleLoad()"
+                        (success)="handleSuccess($event)"
+                        formControlName="captcha">
+                      </ngx-recaptcha2>
+                  </div>
+                  <div class="col-sm"></div>
+                </div>
+
+                <div class="mt-4 d-grid justify-content-center">
+                  <button style="width: 100%; padding-left: 160px; padding-right: 160px;" class="btn btn-warning" 
+                    type="submit" [disabled]="signupForm.invalid || isRegistering">
+                    <div class="spinner-border text-info m-0 p-0" style="text-align:center;" role="status" *ngIf="isRegistering">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span *ngIf="!isRegistering">Register</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          
+          <div class="text-center" style="font-size:17px;">
+            <p>Already have an account ? <a  routerLink="/account/login" class="fw-medium text-warning" style="font-weight: 100px;"> Login</a>
+            </p>  
+          </div>
+        </div>
+        <!-- end card -->
+
+      </div> <!-- end col -->
+
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</div>

@@ -1,0 +1,38 @@
+<div class="container-fluid p-4">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="text-center" *ngIf="isLoading">
+                <div class="spinner-border text-primary my-5">
+                    <span class="visually-hidden">Retrieving data...</span>
+                </div>
+                <p class="text-info">Retrieving your Secondary Verification details...</p>
+            </div>
+        
+            <div *ngIf="!isLoading">
+                <h4>Secondary Verification Details</h4>
+        
+                <div class="row mb-3">
+                    <div class="col">
+                        <p class="form-label text-primary">Identification Type</p>
+                        <span class="mx-3 text-secondary"><strong>{{ model.identificationType }}</strong></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <p class="form-label text-primary">Identification ID (Front)</p>
+                        <span class="mx-3 text-secondary"><strong>{{ model.identificationFront ?? "---" }}</strong></span>
+                    </div>
+
+                    <div class="col">
+                        <p class="form-label text-primary">Identification ID (Back)</p>
+                        <span class="mx-3 text-secondary"><strong>{{ model.identificationBack ?? "---" }}</strong></span>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>

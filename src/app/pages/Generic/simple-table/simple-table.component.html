@@ -1,0 +1,71 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ state.tableName }}</h5>
+            <div *ngIf="state.loading">
+                <div class="text-center">
+                    <div class="spinner spinner-border text-info mt-4 mb-2">
+                        <span class="visually-hidden">Loading..</span>
+                    </div>
+                    <br />
+                    Loading data...
+                </div>
+            </div>
+
+            <div *ngIf="!state.loading">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let column of getHeaderColumns()">
+                                    {{ column }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of state.model">
+                                <td *ngFor="let column of state.definition">
+                                    <span *ngIf="column.formatType == 'date'">
+                                        {{ item[column.objectName] | date: column.format }}
+                                    </span>
+                                    <span *ngIf="column.formatType == 'number'">
+                                        {{ item[column.objectName] | number: column.format }}
+                                    </span>
+                                    <span *ngIf="!column.formatType">
+                                        {{ item[column.objectName] }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot *ngIf="state.aggregateCb">
+                            <tr>
+                                <td [attr.colspan]="getRow()" class="text-end">Total Amount:</td>
+                                <td *ngIf="state.loadingAggregate" class="placeholder-glow">
+                                    <span class="placeholder col-2"></span>
+                                </td>
+                                <td *ngIf="!state.loadingAggregate" class="text-success"><strong>{{ state.aggregate | number: "1.2-2" }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- PAGINATION -->
+                    <div class="row mb-3">
+                        <div class="col-sm">
+                            <div class="mt-3 btn-toolbar justify-content-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" [disabled]="pageNo === 1" (click)="prevPage()" *ngIf="!isFirstLoad">&lt;</button>
+                                    <button type="button" class="btn btn-primary" [disabled]="pageNo === page" (click)="changePageNumber(page)" *ngFor="let page of pagesArray">
+                                        {{ page }}
+                                    </button>
+                                    <button type="button" class="btn btn-primary" [disabled]="pageNo === totalPages" (click)="nextPage()" *ngIf="!isFirstLoad">&gt;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+g {
+    cursor :none !important;
+    pointer-events: none;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1.5px);
+    z-index: 1000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.loading-spinner {
+    text-align: center;
+    font-size: 18px;
+}
+
+li.list-group-item.hoverable {
+    transition: all .5s ease;
+    cursor: pointer;
+}
+
+li.list-group-item.hoverable:hover {
+    background-color: var(--bs-blue);
+
+    p.text-info {
+        color: var(--bs-white) !important;
+    }
+}
+
+.bold {
+    font-weight: 600;
+}
+
+div.node-button-div {
+    margin-top: 22px;
+}

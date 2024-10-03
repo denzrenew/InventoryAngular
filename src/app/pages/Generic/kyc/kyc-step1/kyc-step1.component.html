@@ -1,0 +1,126 @@
+<div class="container-fluid p-4">
+    <!-- LOADER -->
+    <div class="text-center" *ngIf="state.loading || !state.userModel">
+        <div class="spinner-border text-primary my-5">
+            <span class="visually-hidden">Retrieving data...</span>
+        </div>
+        <p class="text-info">Retrieving your personal information...</p>
+    </div>
+
+    <form (submit)="submitHandler()" class="container" *ngIf="!state.loading && state.userModel" [formGroup]="state.personalVerification">
+        <h4>Step 1. Update your Personal Information</h4>
+        <p>Provide accurate personal information including your full name, date of birth, and residential address.
+            Ensure the details match your official identification documents for smooth verification.
+        </p>
+
+        <div class="alert alert-success d-flex align-items-center" role="alert" *ngIf="!state.loading && isPersonalDetailsComplete()">
+            <i class="mdi mdi-check" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+                All required data has been provided!
+            </span>
+        </div>
+
+        <div class="alert alert-warning d-flex align-items-center" role="alert" *ngIf="!state.loading && !isPersonalDetailsComplete()">
+            <i class="mdi mdi-alert" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+                Please complete your personal information
+            </span>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-lg-0">
+                <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                <input type="text" id="firstName" formControlName="firstName" class="form-control" required />
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-lg-0">
+                <label for="middleName" class="form-label">Middle Name </label>
+                <input type="text" id="middleName" formControlName="middleName" class="form-control" />
+            </div>
+            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-lg-0">
+                <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                <input type="text" id="lastName" formControlName="lastName" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="birthDate" class="form-label">Birthdate <span class="text-danger">*</span></label>
+                <input type="date" id="birthDate" formControlName="birthDate" class="form-control" required />
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="mobile" class="form-label">Mobile Number <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text">{{ getCountryCode() }}</span>
+                    <input type="text" id="mobile" formControlName="mobile" class="form-control" required />
+                </div>
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
+                <select id="coutnry" formControlName="country" required class="form-control">
+                    <option selected value="" disabled>Select your country</option>
+                    <option *ngFor="let country of state.countries" [value]="country.country">
+                        {{ country.country }} {{ country.dial_code ? "(" + country.dial_code + ")" : "" }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <h5>Additional Information</h5>
+        <hr />
+
+        <div class="row mb-3">
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="birthPlace" class="form-label">Birth Place</label>
+                <input type="text" id="birthPlace" formControlName="birthPlace" class="form-control" >
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="nationality" class="form-label">Nationality <span class="text-danger">*</span></label>
+                <input type="text" id="nationality" formControlName="nationality" class="form-control" required />
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="occupation" class="form-label">Occupation <span class="text-danger">*</span></label>
+                <input type="text" id="occupation" formControlName="occupation" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="address" formControlName="address" required></textarea>
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                <input type="text" id="city" formControlName="city" class="form-control" required />
+            </div>
+            <div class="col-12 col-md mb-3 mb-lg-0">
+                <label for="state" class="form-label">State <span class="text-danger">*</span></label>
+                <input type="text" id="state" formControlName="state" class="form-control" required />
+            </div>
+            <div class="col-12 col-md-2 mb-3 mb-lg-0">
+                <label for="zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
+                <input type="text" id="zipCode" formControlName="zipCode" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-xl-4">                
+                <label for="profilePicture" class="form-label">Profile Picture </label>
+                <input type="file" id="profilePicture" formControlName="attachment" class="form-control" 
+                    required (change)="onFileSelected($event)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2 mt-1 mb-3 mb-lg-0">
+                <button type="submit" class="btn btn-primary w-100 w-lg-auto" [disabled]="state.personalVerification?.invalid || state.isSubmitting.personalInfo">
+                    <span *ngIf="state.isSubmitting.personalInfo">
+                        Submitting...
+                    </span>
+                    <span *ngIf="!state.isSubmitting.personalInfo">
+                        {{ formHasModifications() ? 'Submit' : 'Next' }}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,151 @@
+li.list-group-item.hoverable,
+div.row > h5,
+div.row > span
+{
+    transition: all .4s ease;
+    cursor: pointer;
+}
+
+li.list-group-item.hoverable:hover,
+li.list-group-item.selected {
+    background-color: var(--bs-gray);
+
+    h5.subject {
+        color: var(--bs-emphasis-color) !important;
+    }
+
+    span.description {
+        color: var(--bs-secondary-color) !important;
+    }
+}
+
+div.badge-container {
+    margin: auto 0;
+}
+
+.chat-bubble {
+    padding: 15px;
+    // margin: 10px;
+    border-radius: 10px;
+}
+
+.outgoing {
+    background-color: var(--bs-cyan);
+    color: #fff;
+    border: 1px solid var(--bs-gray-500);
+    float: right;
+    max-width: 75%;
+}
+
+.outgoing:before {
+    content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+    left: auto;
+	right: 37px;
+	bottom: -23px;
+	border: 12px solid;
+	border-color: var(--bs-gray-500) var(--bs-gray-500) transparent transparent;
+}
+
+.outgoing:after {
+    content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+    left: auto;
+	right: 38px;
+	bottom: -20px;
+	border: 12px solid;
+	border-color: var(--bs-cyan) var(--bs-cyan) transparent transparent;
+}
+
+.incoming {
+    background-color: var(--bs-indigo);
+    border: 1px solid var(--bs-gray-500);
+    color: var(--bs-white);
+    float: left;
+    max-width: 75%;
+}
+
+.incoming:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 25px;
+    right: auto;
+    top: auto;
+    bottom: -30px;
+    border: 15px solid;
+    border-color: var(--bs-gray-500) transparent transparent var(--bs-gray-500);
+}
+
+.incoming:after {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 26px;
+    right: auto;
+    top: auto;
+    bottom: -27px;
+    border: 30px solid;
+    border-color: var(--bs-indigo) transparent transparent var(--bs-indigo);
+}
+
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+    width: 4px; /* Adjust to your desired width */
+}
+
+/* Track (the area behind the scrollbar) */
+::-webkit-scrollbar-track {
+    background: var(--bs-gray); /* Change to your preferred background color */
+}
+
+/* Thumb (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+    transition: all .3s ease;
+    background: var(--bs-primary); /* Change to your preferred thumb color */
+}
+
+/* On hover, style the thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-primary-text-emphasis); /* Change to your preferred hover color */
+}
+
+@keyframes text-loading {
+    0% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0.5; transform: scale(1); }
+}
+
+.loading-text {
+    animation: text-loading 2s linear infinite;
+}
+
+.justify-content-bottom {
+    position: absolute;
+    bottom: 11px;
+    padding: 0 1.3rem 0 0;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+    display: none;
+    align-items: center; /* Vertically align content */
+    justify-content: center; /* Horizontally align content */
+}
+
+.overlay.show {
+    display: flex;
+}

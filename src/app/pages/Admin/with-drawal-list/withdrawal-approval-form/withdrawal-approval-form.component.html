@@ -1,0 +1,101 @@
+<div class="col-md-9">
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Withdrawal Approval Form</h5>
+                      
+            <form class="needs-validation" name="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>        
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="firstName" id="firstName" placeholder="" >
+                            <label for="firstName">First Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="lastName" id="lastName" placeholder="" >
+                            <label for="lastName">Last Name</label>
+                        </div>
+                    </div>                            
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="amount" id="amount" placeholder="" >
+                            <label for="firstName">Amount</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="accountHolderName" id="accountHolderName" placeholder="" >
+                            <label for="firstName">Account Holder</label>
+                        </div>
+                    </div>                
+                </div>      
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="bankName" id="bankName" placeholder="" >
+                            <label for="bankName">Bank Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="bankBranch" id="bankName" placeholder="" >
+                            <label for="bankName">Bank Branch</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="accountNumber" id="accountNumber" placeholder="" >
+                            <label for="accountNumber">Account Number</label>
+                        </div>
+                    </div>                            
+                </div>                       
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <textarea readonly type="text" class="form-control" formControlName="details" id="details" rows="3" cols="30" placeholder="Enter deposit Details" ></textarea>
+                            <label for="details">Withdrawal Details</label>
+                        </div>           
+                    </div>                            
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" formControlName="currentState" id="currentState" aria-label="Select Status">
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>                            
+                                <option value="Rejected">Rejected</option>                          
+                            </select>
+                            <label for="currentState">Status</label>
+                        </div>                      
+                    </div>
+                </div>
+     
+                <br />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="submit" style="margin-right: 10px;" class="btn btn-success w-md">Submit</button>  
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>            
+                    </div>
+
+
+                </div>
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+

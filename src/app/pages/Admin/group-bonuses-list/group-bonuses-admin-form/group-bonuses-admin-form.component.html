@@ -1,0 +1,107 @@
+<div class="col-md-9">
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Group Bonuses Details</h5>
+                      
+            <form class="needs-validation" name="form" [formGroup]="form" novalidate>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>   
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referFirstName" id="referFirstName" placeholder="" >
+                            <label for="userId">First Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="parentFirstName" id="parentFirstName" placeholder="" >
+                            <label for="userId">Parent First Name</label>
+                        </div>
+                    </div>                            
+                </div>     
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referLastName" id="referLastName" placeholder="" >
+                            <label for="firstName">Last Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="parentLastName" id="parentLastName" placeholder="" >
+                            <label for="lastName">Parent Last Name</label>
+                        </div>
+                    </div>                            
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referEmail" id="referEmail" placeholder="" >
+                            <label for="email">Email</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="parentEmail" id="parentEmail" placeholder="" >
+                            <label for="email">Parent Email</label>
+                        </div>
+                    </div>                            
+                </div>                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="packageAmount" id="packageAmount" placeholder="" >
+                            <label for="amountLeft">Package Amount</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="packageReward" id="packageReward" placeholder="" >
+                            <label for="amountRight">Package Reward</label>
+                        </div>
+                    </div>                            
+                </div>    
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="isTransferred" id="isTransferred" placeholder="" >
+                            <label for="isTransferred">Is Tranferred</label>
+                        </div>
+                    </div>    
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="dateTransferred" id="dateTransferred" placeholder="" >
+                            <label for="dateTransferred">Date Tranferred</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="createdDate" id="createdDate" placeholder="" >
+                            <label for="createdDate">Created Date</label>
+                        </div>
+                    </div>               
+                </div>    
+                <br />
+                <div class="row">
+                    <div class="col-md-4">                        
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+

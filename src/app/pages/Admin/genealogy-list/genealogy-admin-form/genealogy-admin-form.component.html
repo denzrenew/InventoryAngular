@@ -1,0 +1,101 @@
+<div class="col-md-9">
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Deposit Approval Form</h5>
+                      
+            <form class="needs-validation" name="form" [formGroup]="form" novalidate>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>        
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="parentUserId" id="parentUserId" placeholder="" >
+                            <label for="parentUserId">Parent User Id</label>
+                        </div>
+                    </div>                          
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referByEmail" id="referByEmail" placeholder="" >
+                            <label for="referByEmail">Refer By Email</label>
+                        </div>
+                    </div>    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referByFirstName" id="referByFirstName" placeholder="" >
+                            <label for="referByFirstName">Refer By First Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referByLastName" id="referByLastName" placeholder="" >
+                            <label for="referByLastName">Refer By Last Name</label>
+                        </div>
+                    </div>                            
+                </div>                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="childUserId" id="childUserId" placeholder="" >
+                            <label for="childUserId">Child User Id</label>
+                        </div>
+                    </div>   
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="email" id="email" placeholder="" >
+                            <label for="email">Email</label>
+                        </div>
+                    </div>                                                  
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="firstName" id="firstName" placeholder="" >
+                            <label for="firstName">First Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="lastName" id="lastName" placeholder="" >
+                            <label for="lastName">Last Name</label>
+                        </div>
+                    </div>                            
+                </div>         
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="isPlaced" id="isPlaced" placeholder="" >
+                            <label for="isPlaced">Is Placed</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="createdDate" id="createdDate" placeholder="" >
+                            <label for="createdDate">createdDate</label>
+                        </div>
+                    </div>                            
+                </div>         
+                <br />
+                <div class="row">
+                    <div class="col-md-4">                        
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+

@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <app-page-title title="Direct Bonus"></app-page-title>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+            <br />            
+            <div class="table-responsive">
+              <app-basic-table
+              [listApi] = "listApi"
+              [showAction] = "showAction"
+              [showAllocate] = "showAllocate"
+              [showFilter] = "showFilter"
+              [showViewDetails] = "showViewDetails"
+              [deleteApi] = "deleteApi"
+              [addFormRoute] = "formRoute" 
+              [allocateRoute] = "allocateRoute" 
+              [detailFormRoute] = "detailFormRoute" 
+              [columns] = "columns"
+              [hasExport]="true"
+              [exportFn]="export">
+              
+              </app-basic-table>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->  
+  </div>
+  
+

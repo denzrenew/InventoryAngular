@@ -1,0 +1,95 @@
+<div class="col-md-9">
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Profile Details</h5>
+                      
+            <form class="needs-validation" name="form" [formGroup]="form" novalidate>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>        
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="isActive" id="isActive" placeholder="" >
+                            <label for="isActive">Is Active</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="referralCode" id="referralCode" placeholder="" >
+                            <label for="referralCode">Referral Code</label>
+                        </div>
+                    </div>                            
+                </div>             
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="firstName" id="firstName" placeholder="" >
+                            <label for="firstName">First Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="lastName" id="lastName" placeholder="" >
+                            <label for="lastName">Last Name</label>
+                        </div>
+                    </div>                            
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="middleName" id="middleName" placeholder="" >
+                            <label for="middleName">Middle Name</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="email" id="email" placeholder="" >
+                            <label for="lastName">Email</label>
+                        </div>
+                    </div>                            
+                </div>                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="mobile" id="mobile" placeholder="" >
+                            <label for="mobile">Mobile</label>
+                        </div>
+                    </div>      
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="accountType" id="accountType" placeholder="" >
+                            <label for="accountType">Account Type</label>
+                        </div>
+                    </div>       
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" readonly class="form-control" formControlName="hasTwoAuth" id="hasTwoAuth" placeholder="" >
+                            <label for="hasTwoAuth">Has 2-Factor Authentication</label>
+                        </div>
+                    </div>                         
+                </div>         
+
+                <br />
+                <div class="row">
+                    <div class="col-md-4">                        
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+<ngx-spinner  
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+
+

@@ -1,0 +1,125 @@
+
+
+<h5 *ngIf="showFilter" class="w-100">Filters</h5>
+
+<div *ngIf="showFilter" class="filters">
+    <ng-container *ngFor="let column of columns">
+        <input
+          *ngIf="column.fieldType === 'string' && column.filterable"
+          class="ml-0 searchCollectorInput"
+          [ngClass]="['filter-' + column.field]"
+          style="margin-right: 20px; width: 300px;"
+          type="text"
+          (input)="filterChange(column, $event)"
+          [placeholder]="column.name" />
+    </ng-container>
+
+    <button class="btn btn-primary" style="margin-right: 10px;" (click)="onFilter()">Filter</button>
+    <button class="btn btn-secondary" (click)="resetFilter()">Reset Filter</button>  
+</div> 
+
+<button *ngIf="hasExport && exportFn" class="btn btn-success mt-3" (click)="exportFn()" [disabled]="isDownloading">
+    <div class="spinner-border spinner-border-sm text-info mx-3" style="text-align:center;" role="status" *ngIf="isDownloading">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <span *ngIf="!isDownloading">
+        <i class="bx bx-download"></i> {{ exportLabel1 ?? "Export" }}
+    </span>
+</button>
+
+<button *ngIf="hasExport && exportFn2" class="btn btn-success mt-3 mx-3" (click)="exportFn2()" [disabled]="isDownloading">
+    <div class="spinner-border spinner-border-sm text-info mx-3" style="text-align:center;" role="status" *ngIf="isDownloading">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <span *ngIf="!isDownloading">
+        <i class="bx bx-download"></i> {{ exportLabel2 ?? "Export" }}
+    </span>
+</button>
+
+<div style="overflow: hidden; ">
+    <div class="table-responsive overflow-x-auto">
+        <table class="table border-top-0">
+            <thead>
+                <tr>
+                    <ng-container *ngFor="let column of columns">
+                        <th [ngClass]="[column.sortable ? 'sortable' : '' , column.class || '']" (click)="sortData(column)">
+                            <span [ngClass]="column.cellClass || ''">{{ column.name }}</span>            
+                            <i class="fas" [ngClass]="getSortIcon(column)"></i>
+                        </th>
+                    </ng-container>   
+                    <th *ngIf="showViewDetails">View Detail</th>           
+                    <th *ngIf="showAllocate">Allocate</th>              
+                    <th *ngIf="showAction">Action</th>                 
+                </tr>
+            </thead>
+            <tbody>
+                <ngx-spinner  
+                    [fullScreen] = "false"
+                    style="opacity: .7;"
+                    type="ball-scale-multiple"
+                    bdColor="#fefbf23e">
+                    <span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+                </ngx-spinner>
+                <tr *ngFor="let row of data" class="table-row">
+                    <ng-container *ngFor="let column of columns">
+                        <td *ngIf="column.class !== 'd-none'">
+                            <span *ngIf="column.class !== 'status'" [ngClass]="column.cellClass || ''">{{ getValue(row, column) }}</span>
+                            <span *ngIf="column.class === 'status'" [ngClass]="column.class + '-' + getValue(row, column) || ''">{{ getValue(row, column) }}</span>
+                        </td>
+                    </ng-container>
+    
+                    <!-- Button trigger modal -->
+                    <td *ngIf="showViewDetails">
+                        <button type="button" class="btn btn-outline-primary btn-sm btn-rounded" (click)="view(row)">
+                            View Details
+                        </button>
+                    </td>
+    
+                    <!-- Button trigger modal -->
+                    <td *ngIf="showAllocate">
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-rounded" routerLink="{{ allocateRoute }}" [queryParams]="{id: row.id}" routerLinkActive="active">
+                            Allocate
+                        </button>
+                    </td>
+    
+                    <!-- Button trigger modal -->
+                    <td *ngIf="showTransfer">
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-rounded" (click)="triggerAction('transfer', row)">
+                            Transfer
+                        </button>
+                    </td>
+      
+                    <td *ngIf="showAction">
+                        <div class="d-flex gap-3">
+                            <!-- <a  routerLink="{{addFormRoute}}" [queryParams]="{id: row.id}"  routerLinkActive="active"  class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> -->
+                            <a (click)="edit(row)" href="javascript:void(0)" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                        </div>
+                    </td>
+                </tr>
+    
+                <tr *ngIf="!data.length">
+                    <td colspan="100">No data found.</td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <div style="margin-top: 15px;margin-bottom: 15px; font-size: 17px;" *ngIf="showTotal" class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-7">
+                <span>TOTAL AMOUNT:</span>
+            </div>
+            
+            <div class="col-sm-2">
+                <span> {{totalAmount}}</span>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-sm-7">
+                <app-dcj-pagination [totalRow]="totalRow" (onPagechange)="paginate($event)"></app-dcj-pagination>
+            </div>
+            
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item"  [ngClass]="{'disabled': pageNumber === 1}">
+        <a class="page-link" (click)="prevPage()" href="javascript:void(0)" [attr.aria-disabled]="pageNumber === 1"
+         tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li *ngIf="pageNumber>10" class="page-item">
+        <a class="page-link" (click)="previosGroup()" href="javascript:void(0)">...</a>
+      </li>      
+      <ng-container *ngFor="let f of [].constructor(endGroupNumber); let r = index ">
+        <li class="page-item " [ngClass]="{'active': pageNumber === r+1 + groupNumber * maxPage}"  [attr.aria-current]="pageNumber === r+1 + groupNumber * maxPage" >
+            <a class="page-link"  [ngClass]="{'selected-pagenumber': pageNumber === r+1 + groupNumber * maxPage}" 
+             (click)="clickPageNumber(r+1 + groupNumber * maxPage)" href="javascript:void(0)">{{r+1 + groupNumber * maxPage}}</a>
+        </li>
+      </ng-container>
+      <li *ngIf="numberOfPages > endGroupNumber + groupNumber * maxPage" class="page-item">
+        <a class="page-link" (click)="nextGroup()" href="javascript:void(0)">...</a>
+      </li>         
+      <li [ngClass]="{'disabled': pageNumber>=numberOfPages}" class="page-item">
+        <a class="page-link" [attr.aria-disabled]="pageNumber>=numberOfPages" (click)="nextPage()" href="javascript:void(0)">Next</a>
+      </li>
+    </ul>
+  </nav>

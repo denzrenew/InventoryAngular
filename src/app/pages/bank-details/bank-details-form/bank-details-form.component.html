@@ -1,0 +1,73 @@
+<div class="col-md-9">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Bank Details</h5>
+            <p class="card-title-desc"></p>
+            <form class="needs-validation" name="form" [formGroup]="bankForm" (ngSubmit)="onSubmit()" novalidate>          
+                <alert type="success" *ngIf="successMessage" [dismissible]="false">Bank details successfully created.
+                </alert>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>        
+            
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="bankName" formControlName="bankName"  placeholder="Enter bank name" 
+                            [class.is-invalid]="submitted && f.bankName.errors" />
+                            <div *ngIf="submitted && f.bankName.errors" class="invalid-feedback">
+                              <div *ngIf="f.bankName.errors.required">Bank name is required</div>                      
+                            </div>
+                            <label for="bankName">Bank Name</label>
+                        </div>            
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="accountNumber" formControlName="accountNumber" placeholder="Enter account number" 
+                            [class.is-invalid]="submitted && f.accountNumber.errors" />
+                          <div *ngIf="submitted && f.accountNumber.errors" class="invalid-feedback">
+                            <div *ngIf="f.accountNumber.errors.required">Account number is required</div>  
+                            <div *ngIf="f.accountNumber.errors.maxLength">Account number exceeded maximum allowed characters.</div>                      
+                          </div>
+                            <label for="accountNumber">Account Number</label>
+                        </div>
+                    </div>                                         
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="accountHolderName" formControlName="accountHolderName" placeholder="Enter account holder name"    
+                            [class.is-invalid]="submitted && f.accountHolderName.errors" />
+                            <div *ngIf="submitted && f.accountHolderName.errors" class="invalid-feedback">
+                              <div *ngIf="f.accountHolderName.errors.required">Account holder name is required</div>                      
+                            </div>
+                            <label for="accountHolderName">Account Holder Name</label>
+                        </div>            
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="notes" formControlName="notes"  placeholder="Enter notes" 
+                            [class.is-invalid]="submitted && f.notes.errors" />
+                            <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+                              <div *ngIf="f.notes.errors.required">Note is required</div>        
+                              <div *ngIf="f.notes.errors.maxLength">Note exceeded maximum allowed characters.</div>                   
+                            </div>                    
+                            <label for="notes">Notes</label>
+                        </div>             
+                    </div>
+                </div>
+                <br />                
+                <button type="submit" class="btn btn-primary w-md">Submit</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-primary w-md" (click)="onBackClick()">Back</button>
+
+                <div class="overlay" [class.show]="isSubmitting">
+                    <div class="spinner-container">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+
+</div>

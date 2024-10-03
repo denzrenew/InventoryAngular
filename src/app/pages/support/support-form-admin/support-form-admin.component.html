@@ -1,0 +1,183 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- LEFT PART (LIST) -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body" style="max-height: 80vh;">
+
+                    <!-- LIST FUNCTIONS -->
+                    <div class="row align-items-end">
+                        <div class="col-sm">
+                            <h4 class="text-muted">
+                                Help and Support List
+                            </h4>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row mb-3">
+                        <div class="col-sm">
+                            <div class="input-group">
+                                <form [formGroup]="searchForm">
+                                    <input type="text" class="form-control" placeholder="Search..." formControlName="value">
+                                </form>
+                                <select class="form-select w-25" (change)="selectFilter($event)">
+                                    <option value="" selected disabled>Select a filter...</option>
+                                    <option value="firstName">First Name</option>
+                                    <option value="lastName">Last Name</option>
+                                    <option value="email">Email</option>
+                                    <option value="subject">Subject</option>
+                                    <option value="content">Content</option>
+                                </select>
+                                <button class="btn btn-info" title="Search" (click)="searchTickets()">
+                                    <i class="bx bx-search-alt-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LIST CONTENT -->
+                    <div class="row">
+                        <div class="col-sm">
+                            <ul class="list-group" style="max-height:58vh; overflow-y: auto;">
+                                <li class="list-group-item text-center" *ngIf="isLoading">
+                                    <div class="spinner-border text-info m-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="text-info">
+                                        <span class="loading-text">
+                                            Fetching tickets...
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="list-group-item text-center" *ngIf="!isLoading && supportTickets.length <= 0">
+                                    <div class="my-4">
+                                        <span class="text-muted">You currently have no tickets</span>
+                                    </div>
+                                </li>
+                                <li class="list-group-item hoverable" *ngFor="let supportTicket of supportTickets" (click)="selectTicket(supportTicket)" [class.selected]="selectedTicket?.id === supportTicket.id">
+                                    <div class="row">
+                                        <div [class.col-sm]="!isNew(supportTicket.createdDate)" 
+                                            [class.col-sm-10]="isNew(supportTicket.createdDate)">
+                                            <div class="row">
+                                                <h5 class="text-primary subject text-truncate">{{ supportTicket.subject }} <span class="text-muted font-size-10">({{ supportTicket.createdDate | date: 'MMM/dd/yyyy hh:mm a' }})</span></h5>
+                                            </div>
+                                            <div class="row">
+                                                <span class="text-secondary font-size-12 description text-truncate">
+                                                    {{ supportTicket.content }}
+                                                </span>
+                                            </div>
+                                            <div class="row">
+                                                <span class="text-warning font-size-12 description text-truncate">
+                                                    Sender: <span class="text-info">{{ supportTicket.lastName }}, {{ supportTicket.firstName }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2 badge-container align-self-end" *ngIf="isNew(supportTicket.createdDate) && !supportTicket.isReadByAdmin">
+                                            <span class="badge bg-danger">New!</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="overlay" [class.show]="isNavigating">
+                                <div class="spinner-container">
+                                    <div class="spinner-border text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="mt-3 btn-toolbar justify-content-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" [disabled]="pageNumber === 1" (click)="prevPage()" *ngIf="!isFirstLoad">&lt;</button>
+                                    <button type="button" class="btn btn-primary" 
+                                        *ngFor="let page of pagesArray"
+                                        [disabled]="pageNumber === page" (click)="changePageNumber(page)">{{ page }}</button>
+                                    <button type="button" class="btn btn-primary" [disabled]="pageNumber === totalPages" (click)="nextPage()" *ngIf="!isFirstLoad">&gt;</button>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card">
+                <div class="card-body" style="height: 80vh; overflow-y: auto; overflow-x: hidden; padding: 10px;">
+                    
+                    <div *ngIf="selectedTicket">
+                        <div class="row">
+                            <div class="col-sm">
+                                <h5 class="py-2 ps-2">{{ selectedTicket?.subject ?? "No ticket selected" }}</h5>
+                            </div>
+                            <hr>
+                        </div>
+    
+                        <!-- Display if no selected ticket or no tickets -->
+                        <div class="d-flex align-items-center justify-content-center" style="margin-top: 16rem;" *ngIf="!selectedTicket">
+                            <p class="text-center">
+                                Nothing to show here, feel free to ask us a <span class="text-warning">question</span> and we're here to <span class="text-info">assist</span> <strong> you!</strong><br/>
+                                Just <span class="text-danger">click</span> on the <span class="text-success">"Ask a Question"</span> button<span *ngIf="supportTickets.length > 0"> or you can click on any <br>
+                                item from the list</span>!
+                            </p>
+                        </div>
+    
+                        <!-- Display here -->
+                        <div *ngIf="selectedTicket">
+                            <div class="row mb-4">
+                                <div class="col-sm">
+                                    <div class="chat-bubble outgoing">
+                                        <h6 class="b-500 text-warning">{{ selectedTicket.lastName }}, {{ selectedTicket.firstName }}</h6>
+                                        <p>{{ selectedTicket.content }}</p>
+                                        <p class="text-warning text-end font-size-11">({{ selectedTicket.createdDate | date: 'MMM/dd/yyyy hh:mm a' }})</p>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="row my-4" *ngIf="selectedTicket.adminReply">
+                                <div class="col-sm">
+                                    <div class="chat-bubble incoming">
+                                        <h6 class="b-500 text-warning">You</h6>
+                                        <p>{{ selectedTicket.adminReply }}</p>
+                                        <p class="text-warning text-start font-size-11">({{ selectedTicket.lastModified }})</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="selectedTicket && !selectedTicket.adminReply">
+                        <form [formGroup]="form" (ngSubmit)="submitTicket()">
+                            <div class="d-flex justify-content-bottom w-100">
+                                <div class="input-group">
+                                    <input type="text" formControlName="adminReply" class="form-control" placeholder="Place your response here" maxlength="500" [class.border-danger]="form.get('adminReply').touched && form.get('adminReply').invalid" />
+                                    <button type="submit" class="btn btn-info" [disabled]="form.invalid || isSubmitting">
+                                        <i class="mdi mdi-send"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="overlay" [class.show]="isSubmitting">
+                            <div class="spinner-container">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

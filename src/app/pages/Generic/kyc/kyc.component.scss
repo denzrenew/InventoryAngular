@@ -1,0 +1,131 @@
+$incomplete-color: #FFC300;
+$incomplete-color-subtle: #FFC300CC;
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px; /* Adjust spacing between legend items */
+
+        .color-square {
+            width: 10px;
+            height: 10px;
+            margin-right: 10px; /* Adjust spacing between color square and label */
+
+            &.color-incomplete {
+                background-color: $incomplete-color;
+            }
+
+            &.color-rejected {
+                background-color: var(--bs-danger);
+            }
+
+            &.color-complete {
+                background-color: var(--bs-info);
+            }
+
+            &.color-approved {
+                background-color: var(--bs-success);
+            }
+        }
+
+        .legend-label {
+            font-size: 12px;
+            /* Add additional styling for the legend label as needed */
+        }
+    }
+}
+  
+/* OVERRIDE NGX BOOTSTRAP CSS FOR TABS */
+::ng-deep .tab-class {
+    transition: all ease 0.3s;
+
+    // Mobile
+    @media (max-width: 425px) {
+        
+    }
+
+    // Tablet
+    @media (max-width: 1024px) and (min-width: 426px) {
+        a.nav-link {
+            height: 3.5rem;
+            align-content: center;
+        }
+    }
+
+    &.incomplete > a {
+        border: $incomplete-color 1px solid !important;
+        outline: 0 !important;
+
+        &:hover {
+            color: #FFFC;
+            background-color: $incomplete-color-subtle;
+        }
+
+        &.active {
+            background-color: $incomplete-color;
+
+            &:hover {
+                background-color: $incomplete-color-subtle;
+            }
+        }
+    }
+
+    &.rejected > a {
+        border: var(--bs-danger) 1px solid !important;
+        outline: 0 !important;
+
+        &:hover {
+            color: #FFFC;
+            background-color: var(--bs-danger-border-subtle);
+        }
+
+        &.active {
+            background-color: var(--bs-danger);
+
+            &:hover {
+                background-color: var(--bs-danger-border-subtle);
+            }
+        }
+    }
+
+    &.complete > a {
+        color: #FFFC;
+        border: var(--bs-info) 1px solid !important;
+        outline: 0 !important;
+
+        &:hover {
+            color: #FFFC;
+            background-color: var(--bs-info-border-subtle);
+        }
+
+        &.active {
+            background-color: var(--bs-info);
+
+            &:hover {
+                background-color: var(--bs-info-border-subtle);
+            }
+        }
+    }
+
+    &.approved > a {
+        border: var(--bs-success) 1px solid !important;
+        outline: 0 !important;
+
+        &:hover {
+            color: #FFFC;
+            background-color: var(--bs-success-border-subtle);
+        }
+
+        &.active {
+            background-color: var(--bs-success);
+
+            &:hover {
+                background-color: var(--bs-success-border-subtle);
+            }
+        }
+    }
+}

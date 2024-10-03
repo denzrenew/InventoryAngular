@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-md-9">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Deposit</h5>
+                <p class="card-title-desc">When you deposit money, it is important to provide a description that accurately reflects the purpose of the deposit. This description can help you and the admins keep track of your transactions and ensure that the correct amount is credited to your account.</p>
+
+                <form class="needs-validation" name="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                    <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>
+                    <alert type="warning" >Notes: Deposit will be approved within 24hours (depends on bank's approval)</alert>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" formControlName="depositCategory" id="depositCategory" aria-label="Select Category">
+                                    <option value="None" selected>Select category</option>
+                                    <option *ngFor="let s of packageList" [value]="s">
+                                        {{ s }}
+                                    </option>
+                                </select>
+                                <label for="depositCategory">Deposit Category</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" formControlName="amount" id="amountId" placeholder="Enter Deposit Amount" >
+                                <label for="depositAmount">Entered Amount</label>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="form-floating mb-3">
+                        <textarea type="text" class="form-control" formControlName="depositDetails" id="depositDetails" rows="3" cols="30" placeholder="Enter MOP / Reference Number" ></textarea>
+                        <label for="depositDetails">Enter MOP / Reference Number</label>
+                        <div class="mt-1" >
+                            <span class="text-warning">FOR NOTES YOU MAY ENTER : MOP / Reference Number</span>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="col">
+                            <label for="Attachment" class="form-label">Attachment <span class="text-danger">*</span></label>
+                            <input type="file" id="IdAttachment" formControlName="Attachment" class="form-control"
+                                (change)="onFileSelected($event)" />
+                        </div>
+                    </div>
+                    <br />
+                    <div *ngIf="formId === 'new'" >
+                        <button *ngIf="formId === 'new'" type="submit" class="btn btn-primary w-md">Submit</button>&nbsp;&nbsp;&nbsp;
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                    </div>
+                    <div *ngIf="formId !== 'new'" >
+                        <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                    </div>
+                </form>
+            </div>
+            <!-- end card body -->
+        </div>
+    </div>
+
+    <div class="col-md">
+        <app-bank-account-widget></app-bank-account-widget>
+    </div>
+</div>
+
+<ngx-spinner
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>
+
+

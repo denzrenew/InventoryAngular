@@ -1,0 +1,109 @@
+<div class="account-pages my-5 pt-sm-5">
+  <div class="container">
+    <div class="video-container">
+      <video autoplay loop  id="background-video" oncanplay="this.play()" onloadedmetadata="this.muted = true" >
+        <source src="https://staging.samdigitaltech.com/public/bgnew.mp4" type="video/mp4">
+        </video>
+    </div>    
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-5">
+        
+        <div class="row justify-content-center" >
+          <img style="height: 50%; width:100%; margin-bottom: 20px;" src="assets/images/companylogo.png" alt="" class="img-fluid">
+        </div>
+        <div class="card overflow-hidden">
+          <div class="bg-primary-subtle">
+            <div class="row">
+
+            </div>
+          </div>
+          <div class="card-body pt-0">
+
+            <div class="p-2" style="margin-top: 30px;">
+              <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>
+
+                <div class="mb-3">
+                  <label for="email">User Name</label>
+                  <input type="email" formControlName="email" class="form-control" id="email" placeholder="User Name"
+                    [class.is-invalid]="submitted && f.email.errors" />
+                  <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">User is required</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password">Password</label>
+                  <div class="input-group auth-pass-inputgroup">
+                    <input type="{{ visiblePassword ? 'text' : 'password' }}" class="form-control" formControlName="password" placeholder="Enter password"
+                      [class.is-selected]="submitted && f.password.errors" aria-label="Password"
+                      aria-describedby="password-addon">
+
+                    <button class="btn btn-light ms-0" type="button" id="password-addon" (click)="seePassword()">
+                      <i class="mdi {{ visiblePassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline' }}"></i></button>
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <span *ngIf="f.password.errors.required">Password is required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex align-items-center justify-content-center">
+                  <ngx-recaptcha2 
+                    [siteKey]="captchaKey"
+                    (reset)="handleReset()"
+                    (expire)="handleExpire()"
+                    (load)="handleLoad()"
+                    (success)="handleSuccess($event)"
+                    formControlName="captcha"
+                    class="text-center">
+                  </ngx-recaptcha2>
+                </div>
+
+                <div *ngIf="hasOTP" class="mb-3">
+                  <div class="border border-success-subtle text-success p-2 my-2 rounded text-center">
+                      Your OTP has been sent to your registered email
+                  </div>
+                  <label for="otp">OTP</label>
+                  <input type="text" formControlName="otp" class="form-control" id="otp" placeholder="OTP"
+                     />
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember-check">
+                  <label class="form-check-label" for="remember-check">
+                      Remember me
+                  </label>
+              </div>
+
+                <div class="mt-3 d-grid">
+                  <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid || isLoggingIn">
+                    <div class="spinner-border spinner-border-sm text-info m-0 p-0" style="text-align:center;" role="status" *ngIf="isLoggingIn">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span *ngIf="!isLoggingIn">Log In</span>
+                  </button>
+                </div>
+
+                <div class="mt-4 text-center">
+                  <a routerLink="/account/forgotPasswordStep1" class="text-muted"><i class="mdi mdi-lock mr-1"></i> Forgot
+                    your
+                    password?</a>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+        <div class="mt-5 text-center" style="font-size:17px;">
+          <p>Don't have an account ? <a style="font-weight: 100px;" routerLink="/account/signup/2NP6Q4B" class="fw-medium text-warning"> Signup
+              now
+            </a> </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- end container -->
+</div>
+<!-- end page -->

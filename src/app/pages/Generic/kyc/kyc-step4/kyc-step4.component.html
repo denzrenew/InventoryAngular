@@ -1,0 +1,103 @@
+<div class="container-fluid p-4">
+    <form (submit)="submitHandler()" class="container" [formGroup]="state.bankRegistration">
+        <h4>Step 4. Add your Bank</h4>
+        <p>
+            Registering a user's bank details for KYC (Know Your Customer) involves col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0lecting and verifying information such as account
+            number, bank name, and routing number to ensure compliance with financial regulations.
+            This process enhances security and helps financial institutions mitigate risks associated with fraudulent activities.
+        </p>
+
+        <div class="alert alert-danger d-flex align-items-center" role="alert" *ngIf="state.secondaryVerificationComment">
+            <i class="mdi mdi-alert-octagon" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+
+            </span>
+        </div>
+
+        <div class="alert alert-success d-flex align-items-center" role="alert"
+            *ngIf="!state.secondaryVerificationComment && (state.secondaryVerificationStatus === 'Complete' || state.secondaryVerificationStatus === 'Approved')">
+            <i class="mdi mdi-check" style="font-size: 1.5rem;"></i>
+            <span class="mx-2">
+                Nice! Your Secondary Identity Verification has been approved!
+            </span>
+        </div>
+
+        <div class="text-center" *ngIf="state.loading">
+            <div class="spinner-border text-primary my-5">
+                <span class="visually-hidden">Retrieving data...</span>
+            </div>
+            <p class="text-info">Retrieving your Bank details...</p>
+        </div>
+
+        <div *ngIf="!state.loading">
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="accountType" class="form-label">Account Type <span class="text-danger">*</span></label>
+                    <select class="form-control" id="accountType" formControlName="accountType">
+                        <option disabled selected value="">Select Account Type</option>
+                        <option *ngFor="let i of state.bankTypes" [value]="i">
+                            {{ i }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="accountNumber" class="form-label">Account Number <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="accountNumber" formControlName="accountNumber" maxlength="20" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="accountHolderName" class="form-label">Account Holder Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="accountHolderName" formControlName="accountHolderName" maxlength="50" />
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="bankName" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="bankName" formControlName="bankName" maxlength="50" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="bankBranch" class="form-label">Bank Branch <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="bankBranch" formControlName="bankBranch" maxlength="50" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="iban" class="form-label">IBAN <i class="bx bx-info-circle text-info" tooltip="International Bank Account Number"></i></label>
+                    <input type="text" class="form-control" id="iban" formControlName="iban" maxlength="50" />
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="routingNumber" class="form-label">Routing Number</label>
+                    <input type="text" class="form-control" id="routingNumber" formControlName="routingNumber" maxlength="50" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="swiftBicCode" class="form-label">SWIFT BIC Code</label>
+                    <input type="text" class="form-control" id="swiftBicCode" formControlName="swiftBicCode" maxlength="50" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="bsb" class="form-label">BSB</label>
+                    <input type="text" class="form-control" id="bsb" formControlName="bsb" maxlength="50" />
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md-6">
+                    <label for="notes" class="form-label">Notes </label>
+                    <textarea class="form-control" id="notes" formControlName="notes" maxlength="255"></textarea>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-2 mt-1 mb-3 mb-lg-0">
+                    <button type="submit" class="btn btn-primary w-100 w-lg-auto" [disabled]="state.bankRegistration?.invalid || state.isSubmitting.bankRegistration">
+                        <span *ngIf="state.isSubmitting.bankRegistration">Submitting...</span>
+                        <span *ngIf="!state.isSubmitting.bankRegistration">
+                            {{ !state.bank ? 'Submit' : 'Update' }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>

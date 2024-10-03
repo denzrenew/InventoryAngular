@@ -1,0 +1,78 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Manage Contract</h4>
+
+        <div class="my-5 text-center" *ngIf="loading.contract || loading.mainWallet" style="height: 10rem;">
+            <div class="spinner-border text-primary my-5" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!loading.contract && !loading.mainWallet">
+            <div class="my-4">
+                <form [formGroup]="form" (submit)="onSubmit()">
+                    <div class="row my-3">
+                        <div class="col-sm-3 my-2">
+                            <label class="form-label" for="mainWalletBalance">Main Wallet Balance</label>
+                        </div>
+                        <div class="col-sm my-2"
+                            [class.text-success]="mainWallet > 0" 
+                            [class.text-danger]="mainWallet < 0"
+                            [class.text-primary]="mainWallet === 0">
+                            <strong> {{ mainWallet ?? 0 | number: "1.2-2" }}</strong>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-sm-3 my-2">
+                            <label class="form-label" for="currentPlan">Current Plan</label>
+                        </div>
+                        <div class="col-sm">
+                            <div class="input-group">
+                                <span class="input-group-text" id="span-currentPlan"></span>
+                                <input type="text" readonly class="form-control" id="currentPlan" aria-describedby="span-currentPlan" [value]="model?.amount" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!canCreateContract">
+                        <p class="text-danger" *ngIf="!isNew">Can only create a contract if there are currently no contract plan(s).</p>
+                        <p class="text-danger" *ngIf="isNew">Main Wallet Balance is not enough to create a contract.</p>
+                    </div>
+                    <div class="row my-3" *ngIf="canCreateContract">
+                        <div class="col-sm-3 my-2">
+                            <label class="form-label" for="investmentAmount">Subscription Amount</label>
+                        </div>
+                        <div class="col-sm">
+                            <div class="input-group">
+                                <span class="input-group-text" id="span-investmentAmount"></span>
+                                <input type="text" formControlName="amount" class="form-control" id="investmentAmount" aria-describedby="span-investmentAmount"
+                                    [class.border-danger]="isInvalid('amount')" />
+                            </div>
+                            <div class="text-danger" *ngIf="isInvalid('amount')">
+                                {{ errorMessage('amount') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-sm-3 my-2"></div>
+                        <div class="col-sm">
+                            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || loading.submit" *ngIf="canCreateContract">
+                                <span *ngIf="!loading.submit">BUY Now</span>
+                                <span *ngIf="loading.submit">Processing...</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    
+            <hr>
+    
+            <div class="my-4">
+                <div class="col-sm-5">
+                    <p>Expiration date: {{ model?.expiration | date: 'dd/MM/yyyy' }}</p>
+                    <p *ngIf="model"><a href="javascript:void(0)" >View PDF Contract </a> </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

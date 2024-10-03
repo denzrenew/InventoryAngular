@@ -1,0 +1,85 @@
+<div class="col-md-9">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Withdrawal</h5>
+            <p class="card-title-desc">When you withdraw money, it is important to provide a description that accurately reflects the purpose of the withdrawal. This description can help you and the admins keep track of your transactions and ensure that the correct amount is debited from your account.</p>
+            <form class="needs-validation" name="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                <alert type="success" *ngIf="successMessage" [dismissible]="false">Withdrawal request successfully submitted.
+                </alert>
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="withdrawalCategory" formControlName="withdrawalCategory" aria-label="Select withdrawal category">
+                                <option value="None" selected>Select Category</option>
+                                <option value="Personal">Personal</option>
+                            </select>
+                            <label for="withdrawalCategory">Withdrawal Category</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input (change)="onChangeEvent($event)" type="number" class="form-control" id="withdrawalAmount" formControlName="withdrawalAmount" placeholder="Enter withdrawal amount" >
+                            <label for="withdrawalAmount">Withdrawal Amount (Balance: {{ walletAmount | number: "1.2-2" }})</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="bankOption" formControlName="bankOption" aria-label="Select Bank" placeholder="Select Bank" (change)="changeBank($event)">
+                                <option value="None" selected >Select Bank</option>
+                                <option *ngFor="let item of bankoptions"
+                                    [value]="item.id">{{ item.bankName }}-{{item.accountNumber}}</option>
+                            </select>
+                            <label for="bankOption">Bank List</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="withdrawalDetails" formControlName="withdrawalDetails" rows="3" cols="30" placeholder="Enter withdrawal details" ></textarea>
+                            <label for="withdrawalDetails">Withdrawal Details</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input  type="number" readonly class="form-control" id="withdrawalFee" formControlName="withdrawalFee" placeholder="" >
+                            <label for="withdrawalFee">Withdrawal Fee</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input  type="number" readonly class="form-control" id="totalWithdrawal" formControlName="totalWithdrawal" placeholder="" >
+                            <label for="totalWithdrawal">Total Withdrawal </label>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div *ngIf="formId === 'new'" >
+                    <button *ngIf="formId === 'new'" type="submit" class="btn btn-primary w-md">Submit</button>&nbsp;&nbsp;&nbsp;
+                    <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                </div>
+                <div *ngIf="formId !== 'new'" >
+                    <a href="javascript: void(0);" class="btn btn-primary w-md" (click)="onBackClick()">Back</a>
+                </div>
+
+
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>
+
+
+
+<ngx-spinner
+[fullScreen] = "false"
+style="opacity: .7;"
+type="ball-scale-multiple"
+bdColor="#fefbf23e" >
+
+<span style="color:#edb407d8;font-size: large; font-weight: 100px;">Loading...</span>
+</ngx-spinner>

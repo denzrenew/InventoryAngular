@@ -1,0 +1,87 @@
+<div class="container-fluid p-4">
+    <form (submit)="submitHandler()" class="container" [formGroup]="state.primaryVerification">
+        <h4>Step 2. Submit your Primary Identy Verification</h4>
+        <p>This step of the KYC process involves selecting an Identification card for identity verification. 
+            Users can choose from options such as Photo Card, Passport, or Driver's License, ensuring compliance with regulatory requirements.
+        </p>
+
+        <div class="text-center" *ngIf="state.loading">
+            <div class="spinner-border text-primary my-5">
+                <span class="visually-hidden">Retrieving data...</span>
+            </div>
+            <p class="text-info">Retrieving your Primary KYC information...</p>
+        </div>
+
+        <div *ngIf="!state.loading">
+            <div class="alert alert-danger d-flex align-items-center" role="alert" *ngIf="state.primaryVerificationComment">
+                <i class="mdi mdi-alert-octagon" style="font-size: 1.5rem;"></i>
+                <span class="mx-2">
+                    {{ state.primaryVerificationComment }}
+                </span>
+            </div>
+    
+            <div class="alert alert-success d-flex align-items-center" role="alert" 
+                *ngIf="!state.primaryVerificationComment && (state.primaryVerificationStatus === 'Complete' || state.primaryVerificationStatus === 'Approved')">
+                <i class="mdi mdi-check" style="font-size: 1.5rem;"></i>
+                <span class="mx-2">
+                    Nice! Your Primary Identity Verification has been approved!
+                </span>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">
+                    <label for="IdType" class="form-label">ID Type <span class="text-danger">*</span></label>
+                    <select class="form-control" formControlName="IdentificationType" required>
+                        <option value="" disabled>Select an ID Type</option>
+                        <option *ngFor="let i of state.kycModel.primaryData" [value]="i">
+                            {{ i }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0 mb-3 mb-lg-0">                
+                    <label for="IdDocNo" class="form-label">ID Doc. No. <span class="text-danger">*</span></label>
+                    <input type="text" id="IdDocNo" formControlName="IdentificationDocNo" class="form-control" required>
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0">
+                    <label for="IdCardNo" class="form-label">ID Card Number <span class="text-danger">*</span></label>
+                    <input type="text" id="IdCardNo" formControlName="IdentificationCardNo" class="form-control" required>
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0">                
+                    <label for="IdIssuingAuth" class="form-label">ID Issuing Authority <span class="text-danger">*</span></label>
+                    <input type="text" id="IdIssuingAuth" formControlName="IdentificationIssuingAuth" class="form-control" required>
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0">                
+                    <label for="IdExpiration" class="form-label">ID Expiration Date <span class="text-danger">*</span></label>
+                    <input type="date" id="IdExpiration" formControlName="IdentificationExpiration" class="form-control" required>
+                </div>
+            </div>
+    
+            <div class="row mb-3">
+                <div class="col-12 col-md mb-3 mb-lg-0">
+                    <label for="IdFrontImage" class="form-label">ID Image (Front) <span class="text-danger">*</span></label>
+                    <input type="file" id="IdFrontImage" formControlName="IndentificationFront" class="form-control" 
+                        required (change)="onFileSelected($event, 'IndentificationFront')" />
+                </div>
+                <div class="col-12 col-md mb-3 mb-lg-0">                
+                    <label for="IdImageBack" class="form-label">ID Image (Back) <span class="text-danger">*</span></label>
+                    <input type="file" id="IdImageBack" formControlName="IndentificationBack" class="form-control" 
+                        required (change)="onFileSelected($event, 'IndentificationBack')" />
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 col-md-3 mt-1 mb-3 mb-lg-0">
+                    <button type="submit" class="btn btn-primary w-100 w-lg-auto" [disabled]="state.primaryVerification?.invalid || state.isSubmitting.primaryVerification">
+                        <span *ngIf="state.isSubmitting.primaryVerification">Submitting...</span>
+                        <span *ngIf="!state.isSubmitting.primaryVerification">
+                            {{ formIsCompleted() && !formHasModifications() ? 'Next' : 'Submit' }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,277 @@
+<button class="btn btn-info ms-2 mb-2" (click)="backToProfiles()">&lt; Back to list</button>
+<div class="btn-group ms-2 mb-2" dropdown>
+    <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+      Actions <i class="bx bx-caret-down"></i>
+    </button>
+    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+        role="menu" aria-labelledby="button-basic">
+      <li role="menuitem"><a class="dropdown-item pointer text-warning" (click)="showModal(changePasswordModal, 'modal-md')">Change Password</a></li>
+    </ul>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <!-- User Profile | Top Left Part -->
+            <div class="card" >
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <div class="mb-4 me-3">
+                                    <i class="mdi mdi-account-circle text-primary h1"></i>
+                                </div>
+
+                                <!-- Placeholder -->
+                                <div *ngIf="loading.profile">
+                                    <h5 class="placeholder-glow"><span class="placeholder col-8"></span></h5>
+                                    <p class="placeholder-glow">
+                                        <span class="placeholder col-3"></span>&nbsp;<span class="placeholder col-1"></span><br>
+                                        <span class="placeholder col-4"></span>
+                                    </p>
+                                    <div>
+                                        <h4 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h4>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="!loading.profile">
+                                    <h5>{{ getName() }}</h5>
+                                    <p class="text-muted mb-1">
+                                        <a href="{{ getReferralLink() }}" target="_blank">{{ models.userProfile.referralCode }}</a>
+                                        <i title="Copy referral link" class="bx bx-copy pointer" style="padding: 0.7rem 0 0 .5rem !important" (click)="copyReferralCode()"></i>
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 qr-code-container">
+                            <div class="spinner-border text-info m-5" style="text-align:center;" role="status" *ngIf="loading.profile">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <qrcode allowEmptyString="true" [qrdata]="getReferralLink()" width="150" height="150" *ngIf="!loading.profile"></qrcode>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Placeholder -->
+                            <div *ngIf="loading.profile">
+                                <p class="placeholder-glow"><span class="placeholder col-4"></span></p>
+                                <h4 class="placeholder-glow"><span class="placeholder col-1"></span>&nbsp;<span class="placeholder col-4"></span></h4>
+                            </div>
+                            <div *ngIf="!loading.profile">
+                                <p class="fw-medium mb-2">{{ "DASHBOARD.PROFILE.MAIN_WALLET_BALANCE" | translate }} :</p>
+                                <h4> {{ models.wallets.mainWallet | number: "1.2-2" }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="!loading.profile">
+                            <div class="mt-4 mt-sm-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent border-top">
+                    <!-- Placeholder -->
+                    <div class="text-center align-self-center align-items-center" *ngIf="loading.profile">
+                        <a href="#" tabindex="-1" class="btn btn-outline-info disabled placeholder col-4"></a>&nbsp;
+                        <a href="#" tabindex="-1" class="btn btn-outline-success disabled placeholder col-2"></a>                        
+                    </div>
+     
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+            <!-- Wallets | Top Right Part -->
+            <div class="row">
+                <div class="col-sm-4" *ngIf="models.userProfile.accountType?.toUpperCase() === 'PREMIERE'">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                <i class="mdi mdi-account-arrow-right h2 text-warning align-middle mb-0 me-3"></i> {{ "DASHBOARD.WALLETS.DIRECT_REFERRAL" | translate }} 
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12" style="text-align:center; margin-top: .5rem;" *ngIf="loading.wallets.direct">
+                                    <div class="spinner-grow text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.direct">
+                                    <div>
+                                        <h5> {{ models.wallets.directWallet.transferred | number: "1.2-2" }} <i (click)="navigate('direct')" title="Click to redirect to Direct Wallet's balance" class="mdi mdi-wallet ms-1 text-success pointer"></i></h5>
+                                        <p class="text-muted text-truncate mb-0">
+                                            {{ models.wallets.directWallet.untransferred | number: "1.2-2" }} 
+                                            <i class="mdi mdi-arrow-right-bold ms-1 text-info"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.direct">
+                                    <div>
+                                        <apx-chart class="apex-charts cloneable" dir="ltr" [series]="charts.directBonusChart.series" [chart]="charts.directBonusChart.chart" 
+                                            [colors]="charts.directBonusChart.colors" [stroke]="charts.directBonusChart.stroke" [fill]="charts.directBonusChart.fill"></apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- Show only if Premiere account type -->
+                <div class="col-sm-4" *ngIf="models.userProfile.accountType?.toUpperCase() === 'PREMIERE'">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-4">
+                                <i class="mdi mdi-account-multiple h2 text-info align-middle mb-0 me-3"></i> {{ "DASHBOARD.WALLETS.GROUP_BONUS" | translate }} 
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12" style="text-align:center; margin-top: .5rem;" *ngIf="loading.wallets.group">
+                                    <div class="spinner-grow text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.group">
+                                    <div>
+                                        <h5> {{ models.wallets.groupWallet.transferred | number: "1.2-2" }} <i (click)="navigate('group')" title="Click to redirect to Group Wallet's balance" class="mdi mdi-wallet ms-1 text-success pointer"></i></h5>
+                                        <p class="text-muted text-truncate mb-0">
+                                            {{ models.wallets.groupWallet.untransferred | number: "1.2-2" }} 
+                                            <i class="mdi mdi-arrow-right-bold ms-1 text-info"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-12" *ngIf="!loading.wallets.group">
+                                    <div>
+                                        <apx-chart class="apex-charts cloneable" dir="ltr" [series]="charts.groupBonusChart.series"
+                                            [chart]="charts.groupBonusChart.chart" [stroke]="charts.groupBonusChart.stroke"
+                                            [colors]="charts.groupBonusChart.colors" [fill]="charts.groupBonusChart.fill"></apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+            <!-- REFERRALS -->
+            <!-- <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">{{ "DASHBOARD.REFERRALS.HEADER" | translate }}</h4>
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <h5 class="text-muted font-size-14">{{ "DASHBOARD.REFERRALS.DIRECT" | translate }}</h5>
+                                <hr>
+                                <tabset class="nav-tabs nav-tabs-custom card-header-tabs custom-widget-nav ms-auto">
+                                    <ngx-simplebar style="max-height: 26vh;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item py-2" style="text-align:center;" *ngIf="loading.referrals.direct">
+                                                <div class="spinner-border text-info m-5" style="text-align:center;" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item py-4 text-center" *ngIf="!loading.referrals.direct && models.directReferralUsers.length === 0">
+                                                <p class="text-info">No data to display</p>
+                                            </li>
+                                            <li class="list-group-item py-2" *ngFor="let user of models.directReferralUsers">
+                                                <div class="d-flex">
+                                                    <div class="m-1 text-center">
+                                                        <i class="mdi mdi-account-arrow-right-outline h2 text-warning align-middle mb-0 me-3"></i>
+                                                    </div>
+        
+                                                    <div class="align-self-center overflow-hidden me-auto">
+                                                        <div>
+                                                            <h5 class="font-size-14 text-truncate"><a href="javascript: void(0);" class="text-dark">{{ user.referLastName }}, {{ user.referFirstName }}</a>
+                                                            </h5>
+                                                            <p class="text-muted mb-0" title="Date Receive">{{ user.dateReceive | date: 'MM/dd/yyyy hh:mm a' }}</p>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="align-self-end">
+                                                        <p class="text-info"> {{ user.packageAmount | number : "1.2-2" }}</p>
+                                                    </div>
+    
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </ngx-simplebar>
+                                </tabset>
+                            </div>
+                            
+
+                            <div class="col-sm-6">
+                                <h5 class="text-muted font-size-14">{{ "DASHBOARD.REFERRALS.UNALLOCATED" | translate }}</h5>
+                                <hr>
+                                <tabset class="nav-tabs nav-tabs-custom card-header-tabs custom-widget-nav ms-auto">
+                                    <ngx-simplebar style="max-height: 26vh;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item py-2" style="text-align:center;" *ngIf="loading.referrals.unallocated">
+                                                <div class="spinner-border text-info m-5" style="text-align:center;" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item py-4 text-center" *ngIf="!loading.referrals.unallocated && models.unallocatedUsers.length === 0">
+                                                <p class="text-info">No data to display</p>
+                                            </li>
+                                            <li class="list-group-item py-2" *ngFor="let user of models.unallocatedUsers">
+                                                <div class="d-flex">
+                                                    <div class="m-1 text-center">
+                                                        <i class="mdi mdi-account-multiple-outline h2 text-info align-middle mb-0 me-3"></i>
+                                                    </div>
+        
+                                                    <div class="align-self-center overflow-hidden me-auto">
+                                                        <div>
+                                                            <h5 class="font-size-14 text-truncate"><a
+                                                                    href="javascript: void(0);"
+                                                                    class="text-dark">{{ user.lastName }}, {{ user.firstName }}</a>
+                                                            </h5>
+                                                            <p class="text-muted mb-0" title="Date Invited">{{ user.createdDate | date: 'MM/dd/yyyy hh:mm a' }}</p>
+                                                        </div>
+                                                    </div>
+    
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </ngx-simplebar>
+                                </tabset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+</div>
+
+<ng-template #buyContractModal>
+    <div class="modal-header">
+        <h5 class="modal-title pull-left">Manage Plan</h5>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-buy-contract [userId]="userId" [callback]="closeModal" [modal]="bsModalRef"></app-buy-contract>
+    </div>
+</ng-template>
+
+<ng-template #changePasswordModal>
+    <div class="modal-header">
+        <h5 class="modal-title pull-left">Change Password</h5>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-change-password [userId]="userId" [callback]="closeModal" [modal]="bsModalRef"></app-change-password>
+    </div>
+</ng-template>

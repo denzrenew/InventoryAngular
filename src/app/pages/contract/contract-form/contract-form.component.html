@@ -1,0 +1,167 @@
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <app-page-title title="Manage Plan"></app-page-title>
+
+    <!-- end page title -->
+    <div class="row">
+
+    <div class="col-lg-5" *ngIf="false">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Manage Contract</h4>
+
+                <form class="needs-validation" name="form" [formGroup]="form" (ngSubmit)="onSubmit()"
+                novalidate>
+
+                <alert type="success" *ngIf="successmsg" [dismissible]="false">Contract Successfully submitted.
+                </alert>
+                <alert type="success" *ngIf="autorenewSuccessmsg" [dismissible]="false">Autorenewal Flag has been updated.
+                </alert>
+
+                <alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</alert>
+
+                    <div class="row mb-4">
+                        <label for="mainWalletBalance" class="col-sm-3 col-form-label">Main Wallet Balance</label>
+                        <div class="col-sm-9">
+                            <input formControlName="mainWalletBalance" readonly type="text" class="form-control" id="mainWalletBalance"
+                            [ngClass]="{ 'is-invalid': submitted && f.mainWalletBalance.errors }">
+                            <div *ngIf="submitted && f.mainWalletBalance.errors" class="invalid-feedback">
+                                <div *ngIf="f.mainWalletBalance.errors?.required">Main Wallet Balance is required</div>
+                                <div *ngIf="f.mainWalletBalance.errors?.zeroFound">Main wallet has no fund.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div  *ngIf="formId !== 'new'"  class="row mb-4">
+                        <label for="currentPlan" class="col-sm-3 col-form-label">Current Plan</label>
+                        <div class="col-sm-9">
+                            <input formControlName="currentPlan"  type="email" class="form-control" id="currentPlan"
+                            [ngClass]="{ 'is-invalid': submitted && f.currentPlan.errors }">
+                        </div>
+
+                    </div>
+                    <div class="row mb-4">
+                        <label for="newPlan" class="col-sm-3 col-form-label">Subscription Amount</label>
+                        <div class="col-sm-9">
+                            <input formControlName="investAmount"  type="email" class="form-control" id="investAmount"
+                            [ngClass]="{ 'is-invalid': submitted && f.investAmount.errors }">
+                            <div *ngIf="submitted && f.investAmount.errors" class="invalid-feedback">
+                                <div *ngIf="f.investAmount.errors?.required">Subscription amount is required</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                  <!--   <div *ngIf="false" class="form-check form-switch form-switch-lg mb-3">
+                        <input formControlName="autoRenew" class="form-check-input" type="checkbox" id="autoRenew" checked>
+                        <label class="form-check-label" for="autoRenew">Auto Renew</label>
+                    </div> -->
+                    <div class="row justify-content-end">
+                        <div class="col-sm-9">
+                            <div>
+                                <button [disabled]="form.invalid || submitting" type="submit" class="btn btn-primary w-md">
+                                    <div *ngIf="submitting" class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span *ngIf="!submitting">Buy Now<!-- {{ formId === 'new' ? 'Buy Now' : 'Upgrade Now' }} --></span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <br/>
+                <hr/>
+                <br/>
+                <div  *ngIf="formId !== 'new'" >
+                   <div class="row mb-4">
+                         <!--<div class="col-sm-7 ">
+                            <div  class="form-check form-switch form-switch-lg mb-3">
+                                <div class="col-sm-4">
+                                    <input (change)="checkboxChange($event)"  [(ngModel)]="autoRenewOn"  class="form-check-input" type="checkbox"  checked>
+                                    <label class="form-check-label" for="autoRenew">Auto Renew</label>
+                                </div>
+
+
+                            </div>
+                        </div>-->
+                      <!--   <div class="col-sm-5 ">
+                            <div  class="col-sm-4" >
+                                <div>
+                                    <button [disabled]="renewing" (click)="onRenew()" type="button" class="btn btn-outline-warning w-md">
+                                        <div *ngIf="renewing" class="spinner-border spinner-border-sm" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <span *ngIf="!renewing">Renew Now</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <!-- <div *ngIf="formId !== 'new'" >
+                    <div class="row mb-4">
+                        <div class="col-sm-5">
+                            <p>Expiration date : {{expirationDate}} </p>
+                            <p><a href="javascript:void(0)" (click)="onViewPDF()" >View PDF Contract </a> </p>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- List starts here -->
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Contract List</h4>
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Package Type</th>
+                                <th scope="col">Start</th>
+                                <th scope="col">End</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td colspan="4" class="text-center py-4">
+                                    <div class="spinner-border text-info my-2">
+                                        <span class="visually-hidden">
+                                            Loading...
+                                        </span>
+                                    </div>
+                                    <br />
+                                    Fetching contracts...
+                                </td>
+                            </tr>
+                            <tr *ngIf="!isLoading && contractList.length <= 0">
+                                <td colspan="4" class="text-center py-4">
+                                    You currently have no contracts
+                                </td>
+                            </tr>
+                            <tr *ngFor="let contract of contractList">
+                                <td class="text-info">{{ contract.amount | number }}</td>
+                                <td [class.text-info]="!contract.contractType"
+                                    [class.text-success]="contract.contractType">{{ contract.contractType ?? "---" }}</td>
+                                <td>{{ contract.startAt | date: 'medium' }}</td>
+                                <td>{{ contract.expiration | date: 'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- container-fluid -->

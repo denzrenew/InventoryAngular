@@ -1,0 +1,90 @@
+<button class="btn btn-info ms-2 mb-3" (click)="backToProfiles()">&lt; Back to dashboard</button>
+
+<div class="col-md-9">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Withdrawal</h5>
+            <p class="card-title-desc">
+                When you withdraw money, it is important to provide a description that accurately reflects the purpose of the withdrawal. 
+                This description can help you and the admins keep track of your transactions and ensure that the correct amount is debited from your account.
+            </p>
+            <div>
+                <div class="text-center mt-2" style="height: 20vh;" *ngIf="loadingWallet || loadingBanks">
+                    <div class="spinner-border text-info m-5" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <form [formGroup]="form" (ngSubmit)="formSubmit()" *ngIf="!loadingWallet && !loadingBanks">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="withdrawalCategory" formControlName="category" aria-label="Select withdrawal category"
+                                    [class.border-danger-subtle]="isInvalid('category')">
+                                    <option value selected disabled>Select Category</option>
+                                    <option value="Personal">Personal</option>
+                                    <option value="SMSF">SMSF</option>
+                                    <option value="USDT TRC20">USDT TRC20</option>
+                                </select>
+                                <label for="withdrawalCategory">Withdrawal Category</label>
+                                <div class="text-danger" *ngIf="isInvalid('category')">
+                                    <p class="mt-1 ms-1">{{ showError('category', "Withdrawal Category") }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input (change)="onChangeEvent($event)" type="number" class="form-control" id="withdrawalAmount" formControlName="amount" placeholder="Enter withdrawal amount" min="10" [max]="walletAmount" 
+                                    [class.border-danger-subtle]="isInvalid('amount')" />
+                                <label for="withdrawalAmount">Withdrawal Amount (Balance: {{ walletAmount | number: "1.2-2" }})</label>
+                                <div class="text-danger" *ngIf="isInvalid('amount')">
+                                    <p class="mt-1 ms-1">{{ showError('amount', "Withdrawal Amount") }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="bankOption" formControlName="bankId" aria-label="Select Bank"
+                                    [class.border-danger-subtle]="isInvalid('bankId')">
+                                    <option value="" selected disabled>Select Bank</option>
+                                    <option *ngFor="let bank of bankList" [value]="bank.id">
+                                        {{ bank.bankName }}-{{ bank.accountNumber }}
+                                    </option>
+                                </select>
+                                <label for="bankOption">Bank List</label>
+                                <div class="text-danger" *ngIf="isInvalid('bankId')">
+                                    <p class="mt-1 ms-1">{{ showError('bankId', "Selected Bank") }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="withdrawalDetails" formControlName="details" rows="3" cols="30" placeholder="Enter withdrawal details"
+                                    [class.border-danger-subtle]="isInvalid('details')"></textarea>
+                                <label for="withdrawalDetails">Withdrawal Details</label>
+                                <div class="text-danger" *ngIf="isInvalid('details')">
+                                    <p class="mt-1 ms-1">{{ showError('details', "Withdrawal Details") }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input  type="number" readonly class="form-control" id="fee" formControlName="fee" placeholder="" >
+                                <label for="fee">Withdrawal Fee</label>
+                            </div>
+                        </div>                                         
+                    </div>
+    
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary w-md" [disabled]="form.invalid || isSubmitting">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- end card body -->
+    </div>
+</div>

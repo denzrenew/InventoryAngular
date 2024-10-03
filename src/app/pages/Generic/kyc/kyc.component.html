@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col">
+            <!-- Get Profile then use Update Profile -->
+            <div class="card py-2 py-lg-4">
+                <div class="card-body">
+                    <tabset [justified]="true" #kycTabset [vertical]="state.isMobile">
+                        <tab heading="Personal Information" id="step1" [customClass]="personalInfoColor()" [disabled]="state.tabLocks.personal">
+                            <app-kyc-step1 [state]="state" [parentTab]="kycTabset" [toFormData]="toFormData" [retrieveUserData]="retrieveUserDetails"></app-kyc-step1>
+                        </tab>
+                        <tab heading="Primary Verification" id="step2" [customClass]="primaryStatusColor()" [disabled]="state.tabLocks.primary">
+                            <app-kyc-step2 [state]="state" [parentTab]="kycTabset" [toFormData]="toFormData" [retrieveKYCData]="retrieveKycData"></app-kyc-step2>
+                        </tab>
+                        <tab heading="Secondary Verification" id="step3" [customClass]="secondaryStatusColor()" [disabled]="state.tabLocks.secondary">
+                            <app-kyc-step3 [state]="state" [parentTab]="kycTabset" [toFormData]="toFormData" [retrieveKYCData]="retrieveKycData"></app-kyc-step3>
+                        </tab>
+                        <tab heading="Add Bank" id="step4" [customClass]="bankStatusColor()" [disabled]="state.tabLocks.bank">
+                            <app-kyc-step4 [state]="state" [parentTab]="kycTabset" [retrieveBankDetails]="retrieveBankDetails"></app-kyc-step4>
+                        </tab>
+                    </tabset>
+
+                    <br />
+                    
+                    <!-- JOHN LEGEND -->
+                    <div class="row">
+                        <div class="col container mx-4 mx-xxl-auto">
+                            <strong>Tabs legend</strong>
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="color-square color-incomplete"></div>
+                                    <div class="legend-label">Incomplete</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="color-square color-rejected"></div>
+                                    <div class="legend-label">Rejected</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="color-square color-complete"></div>
+                                    <div class="legend-label">Complete</div>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="color-square color-approved"></div>
+                                    <div class="legend-label">Approved</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

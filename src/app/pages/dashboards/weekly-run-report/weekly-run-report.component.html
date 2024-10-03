@@ -1,0 +1,101 @@
+<div class="container-fluid">
+    <a class="btn btn-success" routerLink="/dashboard">Back to Dashboard</a>
+
+    <div class="card my-3">
+        <div class="card-body">
+            <h5 class="card-title">Weekly Run Report</h5>
+
+            <div class="row mt-4">
+                <div class="col-sm">
+                    <input type="radio" class="btn-check" name="isTransferred" id="untransferred" autocomplete="off" checked>
+                    <label class="btn" for="untransferred" (click)="getReports(false)">Untransferred</label>
+
+                    <input type="radio" class="btn-check" name="isTransferred" id="transferred" autocomplete="off">
+                    <label class="btn" for="transferred" (click)="getReports(true)">Transferred</label>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-sm">
+                    <table class="table table-striped">
+                        <caption class="text-primary" *ngIf="reports.length > 0">
+                            <span *ngIf="reports.length === totalResult">
+                                Displaying <span class="text-success">all</span>
+                            </span>
+                            <span *ngIf="reports.length !== totalResult">
+                                Displaying <span class="text-success">{{ reports.length }}</span> of <span class="text-warning">{{ totalResult }}</span>
+                            </span>
+                             {{ payload.isTransferred ? 'transferred' : 'untransferred' }} carry overs
+                        </caption>
+                        <thead>
+                            <tr>
+                                <td><b>Process Date</b></td>
+                                <td><b>Bonus Amount</b></td>
+                                <td><b>Total Amount Left</b></td>
+                                <td><b>Total Amount Right</b></td>
+                                <td><b>Spill Over Left Amount</b></td>
+                                <td><b>Spill Over Right Amount</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="reports.length <= 0">
+                                <td colspan="6" class="text-center">
+                                    No data to show
+                                </td>
+                            </tr>
+                            <tr *ngFor="let report of reports">
+                                <td>{{ report.processDate | date: 'MMM dd, yyyy hh:mm:ss a' }}</td>
+                                <td [class.text-success]="report.bonusAmount > 100"
+                                    [class.text-info]="report.bonusAmount <= 100">
+                                     {{ report.bonusAmount | number: "1.2-2" }}
+                                </td>
+                                <td [class.text-success]="report.totalAmountLeft > 100"
+                                    [class.text-info]="report.totalAmountLeft <= 100">
+                                     {{ report.totalAmountLeft | number: "1.2-2"}}
+                                </td>
+                                <td [class.text-success]="report.totalAmountRight > 100"
+                                    [class.text-info]="report.totalAmountRight <= 100">
+                                     {{ report.totalAmountRight | number: "1.2-2"}}
+                                </td>
+                                <td [class.text-success]="report.spillOverLeftAmount > 100"
+                                    [class.text-info]="report.spillOverLeftAmount <= 100">
+                                     {{ report.spillOverLeftAmount | number: "1.2-2"}}
+                                </td>
+                                <td [class.text-success]="report.spillOverRightAmount > 100"
+                                    [class.text-info]="report.spillOverRightAmount <= 100">
+                                     {{ report.spillOverRightAmount | number: "1.2-2"}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- OVERLAY UPON NAVIGATION -->
+                    <div class="overlay" [class.show]="isNavigating">
+                        <div class="spinner-container">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="row">
+                <div class="col-sm">
+                    <div class="mt-3 btn-toolbar justify-content-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" [disabled]="payload.pageNo === 1" (click)="prevPage()" *ngIf="!isFirstLoad">&lt;</button>
+                            <button type="button" class="btn btn-primary" [disabled]="payload.pageNo === page" (click)="changePageNumber(page)" *ngFor="let page of pagesArray">
+                                {{ page }}
+                            </button>
+                            <button type="button" class="btn btn-primary" [disabled]="payload.pageNo === totalPages || pagesArray.length <= 0" (click)="nextPage()" *ngIf="!isFirstLoad">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
